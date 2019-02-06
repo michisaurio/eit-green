@@ -1,6 +1,6 @@
 allowed = []
 
-list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+liste = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 
 
 not_allowed = [0, [4, 5, 6, 8, 9, 10, 13], [4, 6, 9, 12, 13, 14], [4, 16], [1, 2, 3, 7, 10, 13],
@@ -8,10 +8,16 @@ not_allowed = [0, [4, 5, 6, 8, 9, 10, 13], [4, 6, 9, 12, 13, 14], [4, 16], [1, 2
                [12, 13, 14, 16, 1, 2, 5], [12, 14, 1, 4, 5, 6], [12, 8], [9, 10, 11, 15, 6, 5],
                [16, 1, 2, 4, 5, 6, 9], [16, 2, 5, 8, 9, 10], [16, 12], [13, 14, 15, 3, 6, 9]]
 
-soft_allowed = [0, [4, 5, 6, 8, 9, 10, 13], [4, 6, 9, 12, 13, 14], [4, 16], [1, 2, 3, 7, 10, 13],
-               [8, 9, 10, 12, 13, 14, 1], [8, 10, 13, 16, 1, 2], [8, 4], [5, 6, 7, 11, 14, 1],
-               [12, 13, 14, 16, 1, 2, 5], [12, 14, 1, 4, 5, 6], [12, 8], [9, 10, 11, 15, 6, 5],
-               [16, 1, 2, 4, 5, 6, 9], [16, 2, 5, 8, 9, 10], [16, 12], [13, 14, 15, 3, 6, 9]]
+merge = [[2, 3], [6, 7]]
+
+for i in range(len(merge)):
+    for j in range(len(merge[i])):
+        not_allowed[merge[i][0]] = list(set().union(not_allowed[merge[i][0]], not_allowed[merge[i][j]]))
+        for k in range(1, len(not_allowed)):
+            if merge[i][j] in not_allowed[k]:
+                not_allowed[k] = list(set().union(not_allowed[k], merge[i]))
+    for j in range(1, len(merge[i])):
+        not_allowed[merge[i][j]] = not_allowed[merge[i][0]]
 
 def loop(cur_list, unused, num):
     if num != 0:
@@ -27,7 +33,7 @@ def loop(cur_list, unused, num):
     if num != 0:
         allowed.append(cur_list)
 
-loop([], list, 0)
+loop([], liste, 0)
 
 #print(allowed)
 #print(len(allowed))
@@ -56,4 +62,3 @@ for i in allowed:
 print(no_sublists_list)
 print(len(no_sublists_list))
 
-print(allowed)
