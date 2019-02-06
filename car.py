@@ -3,10 +3,11 @@ class Car:
     reactionTime = 3
     # A car needs to have an id, position and speed
 
-    def __init__(self, id, position, velocity = (0,0), lane = None):
+    def __init__(self, id, position, velocity = (0,0), course = 0, lane = None):
         self.id = id
         self.position = position
         self.velocity = velocity
+        self.course = course #intermediate angle between car and surroundings
         self.reactionTime = uniform(1,self.reactionTime)
         self.lane = lane
 
