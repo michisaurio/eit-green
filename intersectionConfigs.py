@@ -58,5 +58,5 @@ def main(mergeList = []):
     print(noSublistsList)
     print(len(noSublistsList))
 
-if __name__ == "intersection_configs":
+if __name__ == "__main__":
     main()
