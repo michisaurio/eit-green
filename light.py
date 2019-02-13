@@ -7,10 +7,10 @@ class Light:
         self.id = id
         self.color = color
 
-    def getColor(self):
-        # Returns an enum of type Color
-        return self.color
+    @property
+    def color(self):
+        return self.__color
 
-    def setColor(self, color):
-        # The color should be an enum of type Color
-        self.color = color
+    @color.setter
+    def color(self, color):
+        self.__color = color

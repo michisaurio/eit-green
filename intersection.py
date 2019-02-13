@@ -2,6 +2,5 @@ class Intersection:
 
     # An intersection should contain light objects.
 
-    def __init__(self):
+    def __init__(self) -> None:
         pass
-
