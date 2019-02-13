@@ -1,5 +1,6 @@
 from random import uniform
 from lane import Lane
+from math import sin, cos
 from typing import List
 
 class Car:
@@ -19,13 +20,15 @@ class Car:
         if self.state is 'aloneOnLane':
             self.velocity = self.velocity + timeStep*Ka*(self.lane.maxVelocity - self.velocity)
             if self.lane.type is 'straightLane':
-                self.position = self.position + timeStep*velocity*[cos(course), sin(course)]
+                self.position = self.position + timeStep*self.velocity*[cos(self.course), sin(self.course)]
             elif self.lane.type is 'curvedLane':
-                self.course = self.course + timeStep*velocity/self.lane.radius
-                self.position = self.position + timeStep*velocity*[cos(course), sin(course)]
+                self.course = self.course + timeStep*self.velocity/self.lane.radius
+                self.position = self.position + timeStep*self.velocity*[cos(self.course), sin(self.course)]
         elif self.state is 'behindACar':
+            pass
 
         elif self.state is 'Stop':
+            pass
             
 
     @property
