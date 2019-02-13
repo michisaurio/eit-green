@@ -1,16 +1,32 @@
 from random import uniform
 from lane import Lane
 from typing import List
+
 class Car:
     # A car needs to have an id, position and speed
 
-    def __init__(self, id: int, position: [float,float] = [0,0], velocity: float = 0, course: float = 0, lane: Lane = None, reactionTime: float = 1.5) -> None:
+    def __init__(self, id: int, position: [float,float] = [0,0], velocity: float = 0, course: float = 0, state = None, lane: Lane = None, reactionTime: float = 1.5) -> None:
         self.id = id
         self.position = position
         self.velocity = velocity
         self.course = course #intermediate angle between car and surroundings
+        self.state = state
         self.lane = lane
         self.reactionTime = reactionTime
+
+    def updatePosition(self, timeStep):
+        Ka = 1 # acceleration constant [1/s]
+        if self.state is 'aloneOnLane':
+            self.velocity = self.velocity + timeStep*Ka*(self.lane.maxVelocity - self.velocity)
+            if self.lane.type is 'straightLane':
+                self.position = self.position + timeStep*velocity*[cos(course), sin(course)]
+            elif self.lane.type is 'curvedLane':
+                self.course = self.course + timeStep*velocity/self.lane.radius
+                self.position = self.position + timeStep*velocity*[cos(course), sin(course)]
+        elif self.state is 'behindACar':
+
+        elif self.state is 'Stop':
+            
 
     @property
     def id(self) -> int:
@@ -35,6 +51,14 @@ class Car:
     @velocity.setter
     def velocity(self, velocity):
         self.__velocity = velocity
+
+    @property
+    def referance_velocity(self) -> float:
+        return self.__referance_velocity
+
+    @referance_velocity.setter
+    def referance_velocity(self, referance_velocity):
+        self.__referance_velocity = referance_velocity
 
     @property
     def reactionTime(self):
