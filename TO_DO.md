@@ -14,6 +14,8 @@ lane.py:
         - Function that makes pedestrians able to cross road.
         - Link intersections to traffic lights or possibly remove traffic lights if found to be unnecessary
         - What do we want yellow lights to do?
+        - Add a function to project conflicting roads onto each other to determine the order of the cars
+        - Every time a car enters a road with conflicts, every car should be projected and find the car in front
  
     Roads:
         - Add functionality for swapping lanes
