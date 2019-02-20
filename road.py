@@ -8,7 +8,7 @@ class Road:
 
     def update(self, timeStep: float) -> None:
         for lane in self.lanes:
-            lane.update()
+            lane.update(timeStep)
 
     @property
     def lanes(self) -> [Lane]:
