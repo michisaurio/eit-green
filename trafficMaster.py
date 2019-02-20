@@ -7,3 +7,5 @@ class TrafficMaster:
 
     def update(self, timeStep: float) -> None:
         self.configMaster.update(timeStep)
+        for road in self.roads:
+            road.update(timeStep)
