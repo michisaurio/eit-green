@@ -5,7 +5,8 @@ class ConfigMaster:
         self.configurations = configurations
 
     def update(self, timeStep: float) -> None:
-        self.configurations.update(timeStep)
+        for configuration in self.configurations:
+            configuration.update(timeStep)
 
     @property
     def configurations(self) -> [Configuration]:

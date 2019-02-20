@@ -1,10 +1,10 @@
 from light import Light
 
 class Configuration:
-    def __init__(self, lights: [Light] = []):
+    def __init__(self, lights: [Light] = []) -> None:
         self.lights = lights
 
-    def update(self, timeStep: float):
+    def update(self, timeStep: float) -> None:
         #TODO: Update the configurations
         pass
 

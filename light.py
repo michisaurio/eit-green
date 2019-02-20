@@ -8,9 +8,9 @@ class Light:
         self.color = color
 
     @property
-    def color(self):
+    def color(self) -> Color:
         return self.__color
 
     @color.setter
-    def color(self, color):
+    def color(self, color: Color) -> None:
         self.__color = color

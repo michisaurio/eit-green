@@ -7,7 +7,7 @@ class Lane:
         self.cars = cars
         self.light = light
 
-    def update(self):
+    def update(self) -> None:
         for car in self.cars:
             #TODO: This is where the car should drive and check for collision etc
             pass
