@@ -1,35 +1,15 @@
-from random import uniform
-from lane import Lane
-from math import sin, cos
-from typing import List
+from road import Road
 
 class Car:
     # A car needs to have an id, position and speed
 
-    def __init__(self, id: int, position: [float,float] = [0,0], velocity: float = 0, course: float = 0, state = None, lane: Lane = None, reactionTime: float = 1.5) -> None:
+    def __init__(self, id: int, position: [float,float] = [0,0], speed: float = 0, road: Road = None, nextRoad: Road = None) -> None:
         self.id = id
         self.position = position
-        self.velocity = velocity
-        self.course = course  # intermediate angle between car and surroundings in radians
-        self.state = state
-        self.lane = lane
-        self.reactionTime = reactionTime
+        self.speed = speed
+        self.road = road
+        self.nextRoad = nextRoad
 
-    def updatePosition(self, timeStep):
-        Ka = 1 # acceleration constant [1/s]
-        if self.state is 'aloneOnLane':
-            self.velocity = self.velocity + timeStep*Ka*(self.lane.maxVelocity - self.velocity)
-            if self.lane.type is 'straightLane':
-                self.position = self.position + timeStep*self.velocity*[cos(self.course), sin(self.course)]
-            elif self.lane.type is 'curvedLane':
-                self.course = self.course + timeStep*self.velocity/self.lane.radius
-                self.position = self.position + timeStep*self.velocity*[cos(self.course), sin(self.course)]
-        elif self.state is 'behindACar':
-            pass
-
-        elif self.state is 'Stop':
-            pass
-            
 
     @property
     def id(self) -> int:
@@ -48,35 +28,28 @@ class Car:
         self.__position = position
 
     @property
-    def velocity(self) -> float:
-        return self.__velocity
+    def speed(self) -> float:
+        return self.__speed
 
-    @velocity.setter
-    def velocity(self, velocity: float) -> None:
-        self.__velocity = velocity
-
-    @property
-    def reference_velocity(self) -> float:
-        return self.__reference_velocity
-
-    @reference_velocity.setter
-    def reference_velocity(self, reference_velocity: float) -> None:
-        self.__reference_velocity = reference_velocity
+    @speed.setter
+    def speed(self, speed: float) -> None:
+        self.__speed = speed
 
     @property
-    def reactionTime(self) -> float:
-        return self.__reactionTime
+    def road(self) -> Road:
+        return self.__road
 
-    @reactionTime.setter
-    def reactionTime(self, reactionTime: float) -> None:
-        self.__reactionTime = reactionTime
+    @road.setter
+    def road(self, road) -> None:
+        self.__road = road
 
     @property
-    def lane(self) -> Lane:
-        return self.__lane
+    def nextRoad(self) -> Road:
+        return self.__nextRoad
 
-    @lane.setter
-    def lane(self, lane: Lane) -> None:
-        self.__lane = lane
+    @road.setter
+    def nextRoad(self, nextRoad):
+        self.__nextRoad = nextRoad
+
 
     # TODO: We could add types of cars, and thus have pictures that match them. Size might also be needed
