@@ -14,17 +14,4 @@ class Drawer:
         pass #Add a car with correct rotation to the canvas
 
     def draw(self):
-        img = Image.open("car.png")
-        tkimage = ImageTk.PhotoImage(img.rotate(self.angle))
-        canvas_obj = self.canvas.create_image(
-            250, 250, image=tkimage)
-        self.tk.after_idle(self.update)
-        yield
-        self.canvas.delete(canvas_obj)
-        self.angle += 10
-        self.angle %= 360
-
         pass #Draw all things
-drawer = Drawer()
-drawer.draw()
-drawer.tk.mainloop()
