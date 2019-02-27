@@ -2,10 +2,11 @@ from car import Car
 from light import Light
 
 class Lane:
-    def __init__(self, curve, cars: [Car] = [], light: Light = None) -> None:
-        self.curve = curve
+    def __init__(self, curve, cars: [Car] = [], light: Light = None, curveType = "line") -> None:
+        self.curve = curve #Parametric equation
         self.cars = cars
         self.light = light
+        self.curveType = curveType
 
     def update(self) -> None:
         for car in self.cars:
@@ -36,5 +37,12 @@ class Lane:
     def light(self, light: Light):
         self.__light = light
 
+    @property
+    def curveType(self):
+        return self.__curveType
+
+    @curveType.setter
+    def curveType(self, curveType: str):
+        self.__curveType = curveType
 
     #TODO: How should we implement this? What is the type of curve?
