@@ -59,9 +59,9 @@ class Lane:
                 x = self.__coordinates[1]
         elif(self.__curveType == "ellipsis"):
             x = A*np.cos(s)
-            y = B*np.cos(s)
+            y = B*np.sin(s)
             xdot = -A*np.sin(s)
-            ydot = -B*np.cos(s)
+            ydot = B*np.cos(s)
             vs = np.sqrt(xdot**2+ydot**2)
         return x, y, vs
 

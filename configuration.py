@@ -37,7 +37,7 @@ class Configuration:
     def lights(self) -> [Light]:
         return self.__lights
 
-    @property.setter
+    @lights.setter
     def lights(self, lights: [Light]) -> None:
         self.__lights = lights
 
