@@ -1,12 +1,16 @@
 from car import Car
 from light import Light
+import numpy as np
 
 class Lane:
-    def __init__(self, curve, cars: [Car] = [], light: Light = None, curveType = "line") -> None:
-        self.curve = curve #Parametric equation
+    def __init__(self, coordinates, curve, length: float, cars: [Car] = [], light: Light = None, curveType = "line") -> None:
+        self.coordinates = coordinates #Start and end coordinates in a list [x.start, y.start, x.end, y.end]
+        self.curve = curve #Parametric equation function. Takes in parameter s and returns x and y coordinates and derivative of s.
+        self.length = length
         self.cars = cars
         self.light = light
-        self.curveType = curveType
+        self.curveType = curveType #String specifying if the curve is an ellipsis, line or laneswitch
+
 
     def update(self) -> None:
         for car in self.cars:
@@ -14,12 +18,40 @@ class Lane:
             pass
 
     @property
-    def curve(self):
-        return self.__curve
+    def coordinates(self):
+        return self.__coordinates
+
+    @coordinates.setter
+    def coordinates(self, coordinates):
+        self.__coordinates = coordinates
+
+    @property
+    def curve(self, s):
+        A = self.__coordinates[2]-self.__coordinates[0]
+        B = self.__coordinates[3]-self.__coordinates[1]
+        x = 0
+        y = 0
+        vs = 0
+        if(self.__curveType == "line"):
+            if(A==0):
+                y = self.__coordinates[1] + s
+                vs = 1
+                x = self.__coordinates[0]
+            else:
+                x = self.__coordinates[0] + s
+                vs = 1
+                x = self.__coordinates[1]
+        elif(self.__curveType == "ellipsis"):
+            x = A*np.cos(s)
+            y = B*np.cos(s)
+            xdot = -A*np.sin(s)
+            ydot = -B*np.cos(s)
+            vs = np.sqrt(xdot**2+ydot**2)
+        return x, y, vs
 
     @curve.setter
     def curve(self, curve):
-        self.__curve = curve
+        print("YOU CANT DO THAT")
 
     @property
     def cars(self) -> [Car]:
