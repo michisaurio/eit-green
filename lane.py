@@ -31,8 +31,9 @@ class Lane:
 
             pass
 
-    @property
-    def desiredSpeed()
+
+    def desiredSpeed(self):
+        pass
 
     @property
     def coordinates(self):
@@ -42,7 +43,6 @@ class Lane:
     def coordinates(self, coordinates):
         self.__coordinates = coordinates
 
-    @property
     def curve(self, s):  #Parametric equation function. Takes in parameter s and returns x and y coordinates and derivative of s.
         A = self.__coordinates[2]-self.__coordinates[0]
         B = self.__coordinates[3]-self.__coordinates[1]
@@ -65,10 +65,6 @@ class Lane:
             ydot = B*np.cos(s)
             vs = np.sqrt(xdot**2+ydot**2)
         return x, y, vs
-
-    @curve.setter
-    def curve(self, curve):
-        print("YOU CANT DO THAT")
 
     @property
     def cars(self):
