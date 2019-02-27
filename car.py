@@ -42,7 +42,7 @@ class Car:
     def parameter(self) -> float:
         return self.__parameter
 
-    @speed.setter
+    @parameter.setter
     def parameter(self, parameter: float) -> None:
         self.__parameter = parameter
 
@@ -66,7 +66,7 @@ class Car:
     def nextRoad(self) -> road.Road:
         return self.__nextRoad
 
-    @road.setter
+    @nextRoad.setter
     def nextRoad(self, nextRoad: road.Road):
         self.__nextRoad = nextRoad
 
