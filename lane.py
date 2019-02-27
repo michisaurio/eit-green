@@ -25,6 +25,12 @@ class Lane:
     def update(self) -> None:
         for car in self.cars:
             #TODO: This is where the car should drive and check for collision etc
+            vt = Lane.desiredSpeed(car, self.cars, self.light, self.curveType)
+            [x, y, vs] = Lane.curve(car.parameter)
+            car.parameter = car.parameter + timeStep*vt/vs
+            [x, y, vs] = Lane.curve(car.parameter)
+            car.position = [x,y]
+
             pass
 
     @property
