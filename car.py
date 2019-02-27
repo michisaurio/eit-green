@@ -39,7 +39,6 @@ class Car:
         self.__speed = speed
 
     @property
-
     def parameter(self) -> float:
         return self.__parameter
 
@@ -56,10 +55,7 @@ class Car:
         self.__orientation = orientation
 
     @property
-    def road(self) -> Road:
-=======
     def road(self) -> road.Road:
->>>>>>> ec05fa8143e4bbab23ef53849bf3e526e0b0e5bc
         return self.__road
 
     @road.setter
