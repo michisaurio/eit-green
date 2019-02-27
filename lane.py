@@ -3,13 +3,23 @@ from light import Light
 import numpy as np
 
 class Lane:
-    def __init__(self, coordinates, curve, length: float, cars: [Car] = [], light: Light = None, curveType = "line") -> None:
+    def __init__(self, coordinates, curve, cars: [Car] = [], light: Light = None, curveType = "line") -> None:
         self.coordinates = coordinates #Start and end coordinates in a list [x.start, y.start, x.end, y.end]
         self.curve = curve #Parametric equation function. Takes in parameter s and returns x and y coordinates and derivative of s.
-        self.length = length
         self.cars = cars
         self.light = light
         self.curveType = curveType #String specifying if the curve is an ellipsis, line or laneswitch
+        self.length = 0
+        A = coordinates[2] - coordinates[0]
+        B = coordinates[3] - coordinates[1]
+        if(curveType == "line"):
+            if(A == 0):
+                self.length = B
+            else:
+                self.length = A
+        elif(curveType == "ellipsis"):
+            h = (A-B)**2/(A+B)**2
+            self.length = np.pi*(A+B)*(1+(3*h)/(10+np.sqrt(4-3*h)))
 
 
     def update(self) -> None:
