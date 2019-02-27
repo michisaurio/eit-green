@@ -3,10 +3,12 @@ from road import Road
 class Car:
     # A car needs to have an id, position and speed
 
-    def __init__(self, id: int, position: [float,float] = [0,0], speed: float = 0, road: Road = None, nextRoad: Road = None, carInFront: "Car" = None, waitTime: float = 0) -> None:
+    def __init__(self, id: int, position: [float,float] = [0,0], speed: float = 0, parameter: float = 0; orientation: float=0; road: Road = None, nextRoad: Road = None, carInFront: "Car" = None, waitTime: float = 0) -> None:
         self.id = id
         self.position = position
         self.speed = speed
+        self.parameter = parameter
+        self.orientation = orientation
         self.road = road
         self.nextRoad = nextRoad
         self.carInFront = carInFront
@@ -36,6 +38,22 @@ class Car:
     @speed.setter
     def speed(self, speed: float) -> None:
         self.__speed = speed
+
+    @property
+    def parameter(self) -> float:
+        return self.__parameter
+
+    @speed.setter
+    def parameter(self, parameter: float) -> None:
+        self.__parameter = parameter
+
+    @property
+    def orientation(self) -> float:
+        return self.__orientation
+
+    @orientation.setter
+    def orientation(self, orientation: float) -> None:
+        self.__orientation = orientation
 
     @property
     def road(self) -> Road:
