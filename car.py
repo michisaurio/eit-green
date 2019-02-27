@@ -2,12 +2,7 @@ import road
 
 class Car:
     # A car needs to have an id, position and speed
-
-<<<<<<< HEAD
     def __init__(self, id: int, position: [float,float] = [0,0], speed: float = 0, parameter: float = 0; orientation: float=0; road: Road = None, nextRoad: Road = None, carInFront: "Car" = None, waitTime: float = 0) -> None:
-=======
-    def __init__(self, id: int, position: [float,float] = [0,0], speed: float = 0, road: road.Road = None, nextRoad: road.Road = None, carInFront: "Car" = None, waitTime: float = 0) -> None:
->>>>>>> ec05fa8143e4bbab23ef53849bf3e526e0b0e5bc
         self.id = id
         self.position = position
         self.speed = speed
@@ -44,7 +39,7 @@ class Car:
         self.__speed = speed
 
     @property
-<<<<<<< HEAD
+
     def parameter(self) -> float:
         return self.__parameter
 
