@@ -56,15 +56,18 @@ def sublist(element, array):
     return False
 
 
-def main(mergeList=[], allowedList=notAllowed):
+def main(mergeList=[], allowedList=notAllowed, deleteList=[]):
     merge(mergeList, allowedList)
+    for i in deleteList:
+        allowedList.remove(i)
     loop([], initList, 0, allowedList)
     noSublistList = []
     for i in allowed:
         if not sublist(i, allowed):
             noSublistList.append(i)
-    print(noSublistList)
-    print(len(noSublistList))
+    #print(noSublistList)
+    #print(len(noSublistList))
+    return noSublistList
 
 
 if __name__ == "__main__":
