@@ -1,3 +1,5 @@
+import trafficMaster
+
 def main():
     pass
 

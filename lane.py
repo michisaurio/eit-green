@@ -1,11 +1,9 @@
-from car import Car
 from light import Light
 import numpy as np
 
 class Lane:
-    def __init__(self, coordinates, curve, cars: [Car] = [], light: Light = None, curveType = "line") -> None:
+    def __init__(self, coordinates, cars, light: Light = None, curveType = "line") -> None:
         self.coordinates = coordinates #Start and end coordinates in a list [x.start, y.start, x.end, y.end]
-        self.curve = curve #Parametric equation function. Takes in parameter s and returns x and y coordinates and derivative of s.
         self.cars = cars
         self.light = light
         self.curveType = curveType #String specifying if the curve is an ellipsis, line or laneswitch
@@ -36,7 +34,7 @@ class Lane:
         self.__coordinates = coordinates
 
     @property
-    def curve(self, s):
+    def curve(self, s):  #Parametric equation function. Takes in parameter s and returns x and y coordinates and derivative of s.
         A = self.__coordinates[2]-self.__coordinates[0]
         B = self.__coordinates[3]-self.__coordinates[1]
         x = 0
@@ -64,11 +62,11 @@ class Lane:
         print("YOU CANT DO THAT")
 
     @property
-    def cars(self) -> [Car]:
+    def cars(self):
         return self.__cars
 
     @cars.setter
-    def cars(self, cars: [Car]) -> None:
+    def cars(self, cars) -> None:
         self.__cars = cars
 
     @property
@@ -88,3 +86,6 @@ class Lane:
         self.__curveType = curveType
 
     #TODO: How should we implement this? What is the type of curve?
+
+myLane = Lane([1,1,1,1],1,1)
+#myLane.curve = 32
