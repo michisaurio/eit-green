@@ -20,9 +20,15 @@ class Lane:
             self.length = np.pi*(A+B)*(1+(3*h)/(10+np.sqrt(4-3*h)))
 
 
-    def update(self) -> None:
+    def update(self, timeStep) -> None:
         for car in self.cars:
             #TODO: This is where the car should drive and check for collision etc
+            vt = self.desiredSpeed(car, self.cars, self.light, self.curveType)
+            [x, y, vs] = self.curve(car.parameter)
+            car.parameter = car.parameter + timeStep*vt/vs
+            [x, y, vs] = self.curve(car.parameter)
+            car.position = [x,y]
+
             pass
 
     @property
@@ -86,6 +92,3 @@ class Lane:
         self.__curveType = curveType
 
     #TODO: How should we implement this? What is the type of curve?
-
-myLane = Lane([1,1,1,1],1,1)
-#myLane.curve = 32
