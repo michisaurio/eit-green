@@ -7,11 +7,11 @@ class Configuration:
         self.lights = lights
         self.statelist = inCon.main()
         self.curUpdatingYellowtoRed = False
-        self.curUpdatingYellowtoRedRedtoGreen = False
+        self.curUpdatingRedtoGreen = False
         self.curConfig = 0
 
-    def update(self, timeStep: float, newConfig) -> None:  # TODO: Check if function calls are correct
-        if newConfig != -1 and self.curUpdatingYellowtoRed == False and self.curUpdatingYellowtoRedRedtoGreen == False:
+    def update(self, timeStep: float, newConfig=-1) -> None:  # TODO: Check if function calls are correct
+        if newConfig != -1 and self.curUpdatingYellowtoRed == False and self.curUpdatingRedtoGreen == False:
             self.curUpdatingYellowtoRed = timeStep
             self.curConfig = self.statelist[newConfig]
             for light in self.lights:
@@ -21,12 +21,12 @@ class Configuration:
             self.curUpdatingYellowtoRed += timeStep
             if self.curUpdatingYellowtoRed >= 3:
                 self.curUpdatingYellowtoRed = False
-                self.curUpdatingYellowtoRedRedtoGreen = timeStep
+                self.curUpdatingRedtoGreen = timeStep
                 for light in self.lights:
                     if light.color() == "YELLOW":
                         light.color(Color.RED)
-        if self.curUpdatingYellowtoRedRedtoGreen != 0:
-            self.curUpdatingYellowtoRedRedtoGreen += timeStep
+        if self.curUpdatingRedtoGreen != 0:
+            self.curUpdatingRedtoGreen += timeStep
             if self.curUpdatingYellowtoRed == 4:
                 self.curUpdatingYellowtoRed = False
                 for i in self.curConfig:
