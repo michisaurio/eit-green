@@ -4,7 +4,7 @@ import numpy as np
 class Lane:
     def __init__(self, coordinates, cars, speedLimit, light: Light = None, curveType = "line") -> None:
         self.coordinates = coordinates #Start and end coordinates in a list [x.start, y.start, x.end, y.end]. For mergelanes, these are the coordinates of the straight lane.
-        self.cars = cars
+        self.cars = cars #List with cars in the lane. Assumed topologically sorted.
         self.speedLimit = speedLimit
         self.light = light
         self.curveType = curveType #String specifying if the curve is an ellipsis, line, laneswitch or merge
@@ -23,15 +23,28 @@ class Lane:
 
     def update(self, timeStep) -> None:
 
-        for car in self.cars:
-            #TODO: This is where the car should drive and check for collision etc
-            vt = self.desiredSpeed(car, self.cars, self.light, self.curveType)
+        for i in range(len(self.cars)):
+            # TODO: This is where the car should drive and check for collision etc
+            (currentCar, criticalDistance) = self.cars[i]
+            if criticalDistance > 100: # Change this magic number to a "global" variable
+                acceleration = currentCar.accelerationConstant*(self.speedLimit - currentCar.speed)
+            else:
+                acceleration = currentCar.distanceConstant*criticalDistance - currentCar.speedConstant*currentCar.speed
+            speed = currentCar.speed + timeStep*acceleration
+            currentCar.speed = max(0,min(speed, self.speedLimit)) # Add random number to speedLimit
             [x, y, vs] = self.curve(car.parameter)
-            car.parameter = car.parameter + timeStep*vt/vs
-            [x, y, vs] = self.curve(car.parameter)
-            car.position = [x, y]
-            car.speed = vt
+            currentCar.parameter = currentCar.parameter + timeStep * currentCar.speed / vs
+            [x, y, vs] = self.curve(currentCar.parameter)
+            currentCar.position = [x, y]
 
+            if i < len(self.cars)-1:
+                next_car = self.cars[i+1][0]
+            else:
+                next_car = currentCar.nextLane.cars[0][0]
+
+            # Check if car is in new road/lane. Update topological sorting.
+
+            # Update critical distances
 
     def desiredSpeed(self):
         pass
