@@ -2,15 +2,16 @@ from light import Light
 import numpy as np
 
 class Lane:
-    def __init__(self, coordinates, cars, light: Light = None, curveType = "line") -> None:
-        self.coordinates = coordinates #Start and end coordinates in a list [x.start, y.start, x.end, y.end]
+    def __init__(self, coordinates, cars, speedLimit, light: Light = None, curveType = "line") -> None:
+        self.coordinates = coordinates #Start and end coordinates in a list [x.start, y.start, x.end, y.end]. For mergelanes, these are the coordinates of the straight lane.
         self.cars = cars
+        self.speedLimit = speedLimit
         self.light = light
-        self.curveType = curveType #String specifying if the curve is an ellipsis, line or laneswitch
+        self.curveType = curveType #String specifying if the curve is an ellipsis, line, laneswitch or merge
         self.length = 0
         xLength = coordinates[2] - coordinates[0]
         yLength = coordinates[3] - coordinates[1]
-        if(curveType == "line"):
+        if(curveType == "line" or curveType == "merge"):
             if(xLength == 0):
                 self.length = yLength
             else:
@@ -27,7 +28,7 @@ class Lane:
             [x, y, vs] = self.curve(car.parameter)
             car.parameter = car.parameter + timeStep*vt/vs
             [x, y, vs] = self.curve(car.parameter)
-            car.position = [x,y]
+            car.position = [x, y]
 
 
     def desiredSpeed(self):
@@ -40,6 +41,7 @@ class Lane:
     @coordinates.setter
     def coordinates(self, coordinates):
         self.__coordinates = coordinates
+
 
     def curve(self, parameter):  #Parametric equation function. Takes in parameter s and returns x and y coordinates and derivative of s.
         xLength = self.__coordinates[2]-self.__coordinates[0]
@@ -73,6 +75,15 @@ class Lane:
         self.__cars = cars
 
     @property
+    def speedLimit(self):
+        return self.__speedLimit
+
+    @speedLimit.setter
+    def cars(self, speedLimit) -> None:
+        self.__speedLimit = speedLimit
+
+
+    @property
     def light(self) -> Light:
         return self.__light
 
@@ -89,3 +100,12 @@ class Lane:
         self.__curveType = curveType
 
     #TODO: How should we implement this? What is the type of curve?
+
+    #TODO: Fix this
+    def checkConflict(self, conflictingLanes): #this should be run every time a new car enters a set of conflicting #not yet implemented
+        straightLane = conflictingLanes[0]     #lanes the first lane in conflicting lanes should be a straight lane.
+        orderedCarTuples = []
+        for currentLane in conflictingLanes:
+            for currentCar in currentLane.cars:
+                if currentLane.curveType == "line":
+                    position = straightLane.length - currentCar.parameter*(straightLane.speedLimit/currentLane.speedLimit)
