@@ -22,6 +22,7 @@ class Lane:
 
 
     def update(self, timeStep) -> None:
+
         for car in self.cars:
             #TODO: This is where the car should drive and check for collision etc
             vt = self.desiredSpeed(car, self.cars, self.light, self.curveType)
@@ -29,6 +30,7 @@ class Lane:
             car.parameter = car.parameter + timeStep*vt/vs
             [x, y, vs] = self.curve(car.parameter)
             car.position = [x, y]
+            car.speed = vt
 
 
     def desiredSpeed(self):
@@ -101,19 +103,10 @@ class Lane:
 
     #TODO: How should we implement this? What is the type of curve?
 
-    #TODO: Fix this
-     def checkConflict(self, conflictingLanes): #this should be run every time a new car enters a set of conflicting #not yet implemented
-        straightLane = conflictingLanes[0]     #lanes the first lane in conflicting lanes should be a straight lane.
-        orderedCarTuples = []
-        for currentLane in conflictingLanes:
-            for currentCar in currentLane.cars:
-                if currentLane.curveType == "line":
-                    position = straightLane.length - currentCar.parameter*(straightLane.speedLimit/currentLane.speedLimit)
-
 
 
 
 def project(mergeLane, car):
-    velocityProportionalityConstant = mergeLane.speed/car.speed
+    velocityProportionalityConstant = mergeLane.speedLimit/car.lane.speedLimit # Not the best approximation
     carPosition = mergeLane.length - car.parameter*2/(np.pi) * car.lane.length * velocityProportionalityConstant #The length of car.lane is an approximation, and we approximate the distance
     return carPosition#                                                     travelled by the car as the percentage of the total angle(angle goes between 0 and pi/2 travelled multiplied with the length
