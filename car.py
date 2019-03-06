@@ -61,23 +61,23 @@ class Car:
         return self.__road
 
     @road.setter
-    def road(self, road: road.Road) -> None:
+    def road(self, road) -> None:
         self.__road = road
 
     @property
-    def lane(self) -> lane.Lane:
+    def lane(self):
         return self.__lane
 
     @road.setter
-    def road(self, lane: lane.Lane) -> None:
+    def road(self, lane) -> None:
         self.__lane = lane
 
     @property
-    def nextLane(self) -> lane.Lane:
+    def nextLane(self):
         return self.__nextLane
 
     @nextLane.setter
-    def nextLane(self, nextLane: lane.Lane):
+    def nextLane(self, nextLane):
         self.__nextLane = nextLane
 
     @property
