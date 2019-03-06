@@ -114,6 +114,6 @@ class Lane:
 
 
 def project(mergeLane, car):
-    velocityProportionalityConstant = mergeLane.speed
-    carPosition = mergeLane.length - car.parameter*2/(np.pi) * car.lane.length * velocityProportionalityConstant/car.speed
-    return carPosition
+    velocityProportionalityConstant = mergeLane.speed/car.speed
+    carPosition = mergeLane.length - car.parameter*2/(np.pi) * car.lane.length * velocityProportionalityConstant #The length of car.lane is an approximation, and we approximate the distance
+    return carPosition#                                                     travelled by the car as the percentage of the total angle(angle goes between 0 and pi/2 travelled multiplied with the length
