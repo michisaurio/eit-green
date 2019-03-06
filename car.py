@@ -1,12 +1,13 @@
-from road import Road
+import road
 
 class Car:
     # A car needs to have an id, position and speed
-
-    def __init__(self, id: int, position: [float,float] = [0,0], speed: float = 0, road: Road = None, nextRoad: Road = None, carInFront: "Car" = None, waitTime: float = 0) -> None:
+    def __init__(self, id: int, position: [float,float] = [0,0], speed: float = 0, parameter: float = 0, orientation: float=0, road: road.Road = None, nextRoad: road.Road = None, carInFront: "Car" = None, waitTime: float = 0) -> None:
         self.id = id
         self.position = position
         self.speed = speed
+        self.parameter = parameter
+        self.orientation = orientation
         self.road = road
         self.nextRoad = nextRoad
         self.carInFront = carInFront
@@ -38,19 +39,35 @@ class Car:
         self.__speed = speed
 
     @property
-    def road(self) -> Road:
+    def parameter(self) -> float:
+        return self.__parameter
+
+    @parameter.setter
+    def parameter(self, parameter: float) -> None:
+        self.__parameter = parameter
+
+    @property
+    def orientation(self) -> float:
+        return self.__orientation
+
+    @orientation.setter
+    def orientation(self, orientation: float) -> None:
+        self.__orientation = orientation
+
+    @property
+    def road(self) -> road.Road:
         return self.__road
 
     @road.setter
-    def road(self, road: Road) -> None:
+    def road(self, road: road.Road) -> None:
         self.__road = road
 
     @property
-    def nextRoad(self) -> Road:
+    def nextRoad(self) -> road.Road:
         return self.__nextRoad
 
-    @road.setter
-    def nextRoad(self, nextRoad: Road):
+    @nextRoad.setter
+    def nextRoad(self, nextRoad: road.Road):
         self.__nextRoad = nextRoad
 
     @property
