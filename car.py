@@ -1,14 +1,16 @@
 import road
+import lane
 
 class Car:
     # A car needs to have an id, position and speed
-    def __init__(self, id: int, position: [float,float] = [0,0], speed: float = 0, parameter: float = 0, orientation: float=0, road: road.Road = None, nextRoad: road.Road = None, carInFront: "Car" = None, waitTime: float = 0) -> None:
+    def __init__(self, id: int, position: [float,float] = [0,0], speed: float = 0, parameter: float = 0, orientation: float=0, road: road.Road = None, lane: lane.Lane = None, nextRoad: road.Road = None, carInFront: "Car" = None, waitTime: float = 0) -> None:
         self.id = id
         self.position = position
         self.speed = speed
         self.parameter = parameter
         self.orientation = orientation
         self.road = road
+        self.lane = lane
         self.nextRoad = nextRoad
         self.carInFront = carInFront
         self.waitTime = waitTime #Time that the car is standing still. Definition of still < 10 ?
@@ -61,6 +63,14 @@ class Car:
     @road.setter
     def road(self, road: road.Road) -> None:
         self.__road = road
+
+    @property
+    def lane(self) -> lane.Lane:
+        return self.__lane
+
+    @road.setter
+    def road(self, lane: lane.Lane) -> None:
+        self.__lane = lane
 
     @property
     def nextRoad(self) -> road.Road:
