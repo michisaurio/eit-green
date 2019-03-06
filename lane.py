@@ -29,8 +29,6 @@ class Lane:
             [x, y, vs] = self.curve(car.parameter)
             car.position = [x,y]
 
-            pass
-
 
     def desiredSpeed(self):
         pass
@@ -43,28 +41,28 @@ class Lane:
     def coordinates(self, coordinates):
         self.__coordinates = coordinates
 
-    def curve(self, s):  #Parametric equation function. Takes in parameter s and returns x and y coordinates and derivative of s.
-        A = self.__coordinates[2]-self.__coordinates[0]
-        B = self.__coordinates[3]-self.__coordinates[1]
+    def curve(self, parameter):  #Parametric equation function. Takes in parameter s and returns x and y coordinates and derivative of s.
+        xLength = self.__coordinates[2]-self.__coordinates[0]
+        yLength = self.__coordinates[3]-self.__coordinates[1]
         x = 0
         y = 0
-        vs = 0
+        speed = 0
         if(self.__curveType == "line"):
-            if(A==0):
-                y = self.__coordinates[1] + s
-                vs = 1
+            if(xLength==0):
+                y = self.__coordinates[1] + parameter
+                speed = 1
                 x = self.__coordinates[0]
             else:
-                x = self.__coordinates[0] + s
-                vs = 1
+                x = self.__coordinates[0] + parameter
+                speed = 1
                 x = self.__coordinates[1]
         elif(self.__curveType == "ellipsis"):
-            x = A*np.cos(s)
-            y = B*np.sin(s)
-            xdot = -A*np.sin(s)
-            ydot = B*np.cos(s)
-            vs = np.sqrt(xdot**2+ydot**2)
-        return x, y, vs
+            x = xLength*np.cos(parameter)
+            y = yLength*np.sin(parameter)
+            xdot = -xLength*np.sin(parameter)
+            ydot = yLength*np.cos(parameter)
+            speed = np.sqrt(xdot**2+ydot**2)
+        return x, y, speed
 
     @property
     def cars(self):
