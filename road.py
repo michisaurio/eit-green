@@ -10,6 +10,8 @@ class Road:
         for lane in self.lanes:
             lane.update(timeStep)
 
+    def checkConflict(self, conflictingLanes): #this should be run every time a new car enters a set of conflicting lanes
+
     @property
     def lanes(self) -> [Lane]:
         return self.__lanes
