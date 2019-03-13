@@ -1,7 +1,7 @@
 from lane import Lane
 
 class Road:
-    def __init__(self, lanes: [Lane] = [], nextRoads: ["Road"] = []) -> None:
+    def __init__(self, lanes: [Lane] = None, nextRoads: ["Road"] = None) -> None:
         self.lanes = lanes
         self.nextRoads = nextRoads
         pass
@@ -16,7 +16,10 @@ class Road:
 
     @lanes.setter
     def lanes(self, lanes: [Lane]) -> None:
-        self.__lanes = lanes
+        if lanes == None:
+            self.__lanes = []
+        else:
+            self.__lanes = lanes
 
     @property
     def nextRoads(self) -> ["Road"]:
@@ -24,4 +27,7 @@ class Road:
 
     @nextRoads.setter
     def nextRoads(self, nextRoads: ["Road"]) -> None:
-        self.__nextRoads = nextRoads
+        if nextRoads == None:
+            self.nextRoads = []
+        else:
+            self.__nextRoads = nextRoads

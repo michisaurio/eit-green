@@ -2,7 +2,6 @@ from light import Light
 from color import Color
 import numpy as np
 
-
 class Lane:
     def __init__(self, coordinates, speedLimit, light: Light = None, curveType="line", spawnRate=0.0, queue=0,
                  isMerge=False) -> None:
@@ -10,15 +9,15 @@ class Lane:
         self.cars = []  # List with tuples of cars in the lane and their critical distance(car, criticalDistance). Assumed topologically sorted such that the first element is the frontmost car in the lane.
         self.speedLimit = speedLimit
         self.light = light
-        self.curveType = curveType  # String specifying if the curve is an ellipsis, line, laneswitch or merge
+        self.curveType = curveType #String specifying if the curve is an ellipsis, line, laneswitch or merge
         self.length = 0
         self.spawnRate = spawnRate
         self.queue = queue
         self.isMerge = isMerge  # TODO: implement getters and setters
         xLength = coordinates[2] - coordinates[0]
         yLength = coordinates[3] - coordinates[1]
-        if (curveType == "line" or curveType == "merge"):
-            if (xLength == 0):
+        if(curveType == "line" or curveType == "merge"):
+            if(xLength == 0):
                 self.length = yLength
             else:
                 self.length = xLength
@@ -38,8 +37,8 @@ class Lane:
         for i in range(len(self.cars)):
             # TODO: This is where the car should drive and check for collision etc
             (currentCar, criticalDistance) = self.cars[i]
-            if criticalDistance > 100:  # Change this magic number to a "global" variable
-                acceleration = currentCar.accelerationConstant * (self.speedLimit - currentCar.speed)
+            if criticalDistance > 100: # Change this magic number to a "global" variable
+                acceleration = currentCar.accelerationConstant*(self.speedLimit - currentCar.speed)
             else:
                 acceleration = currentCar.distanceConstant * criticalDistance - currentCar.speedConstant * currentCar.speed
             speed = currentCar.speed + timeStep * acceleration
@@ -116,6 +115,7 @@ class Lane:
         # REMEMBER TO DECREASE QUEUE !!!!!
         pass
 
+
     def desiredSpeed(self):
         pass
 
@@ -142,6 +142,7 @@ class Lane:
     @speedLimit.setter
     def speedLimit(self, speedLimit) -> None:
         self.__speedLimit = speedLimit
+
 
     @property
     def light(self) -> Light:
@@ -173,12 +174,9 @@ class Lane:
 
     @queue.setter
     def queue(self, queue):
-        try:
-            if self.__queue == None:
-                self.__queue = 0
-        except:
-            self.__queue = 0
-        if (queue == self.queue - 1 or queue == self.queue + 1):
+        if queue < 0:
+            print("You tried to set the queue to less than 0")
+        elif (queue == self.queue - 1 or queue == self.queue + 1):
             self.__queue = queue
             print("Changed the queue")
         else:

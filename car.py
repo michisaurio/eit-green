@@ -69,8 +69,8 @@ class Car:
     def lane(self):
         return self.__lane
 
-    @road.setter
-    def road(self, lane) -> None:
+    @lane.setter
+    def lane(self, lane) -> None:
         self.__lane = lane
 
     @property
