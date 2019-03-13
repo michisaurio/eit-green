@@ -37,7 +37,7 @@ class Lane:
         for i in range(len(self.cars)):
             # TODO: This is where the car should drive and check for collision etc
             (currentCar, criticalDistance) = self.cars[i]
-            if criticalDistance > 100: # Change this magic number to a "global" variable
+            if criticalDistance > 2 * currentCar.speed * currentCar.comfortabilityConstant: #TODO: Tune this threshold
                 acceleration = currentCar.accelerationConstant*(self.speedLimit - currentCar.speed)
             else:
                 acceleration = currentCar.distanceConstant * criticalDistance - currentCar.speedConstant * currentCar.speed
@@ -78,7 +78,7 @@ class Lane:
             currentLaneCriticalDistance = self.length - self.cars[0][0].parameter
             if currentCar.lane.curveType == "ellipsis":
                 currentLaneCriticalDistance = project(self, currentCar)
-            if currentLaneCriticalDistance > threshold:
+            if currentLaneCriticalDistance > 2*currentCar.speed*currentCar.comfortabilityConstant:
                 self.cars[0][1] = currentLaneCriticalDistance
                 pass
             nextCar = currentCar.nextLane.cars[-1][0]
