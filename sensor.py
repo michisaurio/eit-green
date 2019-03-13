@@ -12,9 +12,9 @@ class Sensor:
         self.detectRate = detectRate
         self.count = count
 
-    def isDetected(self, detectRate) -> bool:
+    def isDetected(self) -> bool:
         r = random.random()
-        if r <= detectRate:
+        if r <= self.detectRate:
             return True
         return False
 
