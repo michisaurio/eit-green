@@ -129,7 +129,7 @@ class Car:
         return self.__comfortabilityConstant
 
     @comfortabilityConstant.setter
-    def speedConstant(self, comfortabilityConstant: float) -> None:
+    def comfortabilityConstant(self, comfortabilityConstant: float) -> None:
         self.__comfortabilityConstant = comfortabilityConstant
 
     # TODO: We could add types of cars, and thus have pictures that match them. Size might also be needed
