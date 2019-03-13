@@ -2,13 +2,15 @@ from light import Light
 import numpy as np
 
 class Lane:
-    def __init__(self, coordinates, cars, speedLimit, light: Light = None, curveType = "line") -> None:
+    def __init__(self, coordinates, speedLimit, light: Light = None, curveType = "line", spawnRate = 0.0, queue = 0) -> None:
         self.coordinates = coordinates #Start and end coordinates in a list [x.start, y.start, x.end, y.end]. For mergelanes, these are the coordinates of the straight lane.
-        self.cars = cars #List with cars in the lane. Assumed topologically sorted.
+        self.cars = [] #List with cars in the lane. Assumed topologically sorted.
         self.speedLimit = speedLimit
         self.light = light
         self.curveType = curveType #String specifying if the curve is an ellipsis, line, laneswitch or merge
         self.length = 0
+        self.spawnRate = spawnRate
+        self.queue = queue
         xLength = coordinates[2] - coordinates[0]
         yLength = coordinates[3] - coordinates[1]
         if(curveType == "line" or curveType == "merge"):
@@ -22,6 +24,11 @@ class Lane:
 
 
     def update(self, timeStep) -> None:
+
+        if (self.spawnRate*timeStep > np.random.uniform(0,1)):
+            self.queue += 1
+        if self.queue > 0:
+            self.spawn()
 
         for i in range(len(self.cars)):
             # TODO: This is where the car should drive and check for collision etc
@@ -45,6 +52,12 @@ class Lane:
             # Check if car is in new road/lane. Update topological sorting.
 
             # Update critical distances
+
+    def spawn(self):
+        #TODO: Spawn a new car at the start of the lane if possible
+        # REMEMBER TO DECREASE QUEUE !!!!!
+        pass
+
 
     def desiredSpeed(self):
         pass
@@ -113,6 +126,31 @@ class Lane:
     @curveType.setter
     def curveType(self, curveType: str):
         self.__curveType = curveType
+
+    @property
+    def spawnRate(self):
+        return self.__spawnRate
+
+    @spawnRate.setter
+    def spawnRate(self, spawnRate):
+        self.__spawnRate = spawnRate
+
+    @property
+    def queue(self):
+        return self.__queue
+
+    @queue.setter
+    def queue(self, queue):
+        try:
+            if self.__queue == None:
+                self.__queue = 0
+        except:
+            self.__queue = 0
+        if (queue == self.queue-1 or queue == self.queue+1):
+            self.__queue = queue
+            print("Changed the queue")
+        else:
+            print("You tried to change queue by more than 1")
 
     #TODO: How should we implement this? What is the type of curve?
 
