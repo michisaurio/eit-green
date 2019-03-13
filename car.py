@@ -3,7 +3,7 @@ import lane
 
 class Car:
     # A car needs to have an id, position and speed
-    def __init__(self, id: int, position: [float,float] = [0,0], speed: float = 0, parameter: float = 0, orientation: float=0, road: road.Road = None, lane: lane.Lane = None, nextLane: lane.Lane = None, carInFront: "Car" = None, waitTime: float = 0, timeConstant = 1,  comfortabilityConstant = 3) -> None:
+    def __init__(self, id: int, position: [float,float], speed: float = 0, parameter: float = 0, orientation: float=0, road: road.Road = None, lane: lane.Lane = None, nextLane: lane.Lane = None, carInFront: "Car" = None, waitTime: float = 0, timeConstant = 1,  comfortabilityConstant = 3) -> None:
         self.id = id
         self.position = position
         self.speed = speed

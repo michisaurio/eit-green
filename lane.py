@@ -12,7 +12,7 @@ class Lane:
         self.curveType = curveType #String specifying if the curve is an ellipsis, line, laneswitch or merge
         self.length = 0
         self.spawnRate = spawnRate
-        self.queue = queue
+        self.__queue = queue #Let the constructor overload the setter method to make sure that the queue exists
         self.isMerge = isMerge  # TODO: implement getters and setters
         xLength = coordinates[2] - coordinates[0]
         yLength = coordinates[3] - coordinates[1]
@@ -175,12 +175,11 @@ class Lane:
     @queue.setter
     def queue(self, queue):
         if queue < 0:
-            print("You tried to set the queue to less than 0")
+            print("WARNING: You tried to set the queue to less than 0")
         elif (queue == self.queue - 1 or queue == self.queue + 1):
             self.__queue = queue
-            print("Changed the queue")
         else:
-            print("You tried to change queue by more than 1")
+            print("WARNING: You tried to change queue by more than 1")
 
     # TODO: How should we implement this? What is the type of curve?
 
