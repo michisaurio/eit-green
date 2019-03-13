@@ -3,7 +3,7 @@ import lane
 
 class Car:
     # A car needs to have an id, position and speed
-    def __init__(self, id: int, position: [float,float] = [0,0], speed: float = 0, parameter: float = 0, orientation: float=0, road: road.Road = None, lane: lane.Lane = None, nextLane: lane.Lane = None, carInFront: "Car" = None, waitTime: float = 0) -> None:
+    def __init__(self, id: int, position: [float,float] = [0,0], speed: float = 0, parameter: float = 0, orientation: float=0, road: road.Road = None, lane: lane.Lane = None, nextLane: lane.Lane = None, carInFront: "Car" = None, waitTime: float = 0, comfortabilityConstant = 3) -> None:
         self.id = id
         self.position = position
         self.speed = speed
@@ -14,6 +14,7 @@ class Car:
         self.nextLane = nextLane
         self.carInFront = carInFront
         self.waitTime = waitTime #Time that the car is standing still. Definition of still < 10 ?
+        self.comfortabilityConstant = comfortabilityConstant #This number should be multiplied with the car speed to find the distance one tries to keep from the next car
 
 
     @property
