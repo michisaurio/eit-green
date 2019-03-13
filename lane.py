@@ -71,8 +71,12 @@ class Lane:
         self.cars = sortedCars
 
     def updateCriticalDistance(self):
+        if len(self.cars) == 0:
+            return
         if self.light.color == Color.RED:
             self.cars[0][1] = self.length - self.cars[0][0].parameter
+        elif len(self.cars[0][0].nextLane.cars) == 0:
+            self.cars[0][1] = np.inf
         else:
             currentCar = self.cars[0][0]
             currentLaneCriticalDistance = self.length - self.cars[0][0].parameter
@@ -99,14 +103,6 @@ class Lane:
             self.cars[i][1] = nextParameter - currentParameter - currentCar.comfortabilityConstant * currentCar.speed
             nextParameter = currentParameter
 
-    # sort by parameter
-
-    # if i < len(self.cars)-1:
-    #    currentCar.carInFront = self.cars[i+1][0]
-    # else:
-    #    currentCar.carInFront = currentCar.nextLane.cars[0][0]
-
-    # Update critical distances
 
     def spawn(self):
         # TODO: Spawn a new car at the start of the lane if possible
