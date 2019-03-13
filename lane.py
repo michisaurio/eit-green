@@ -49,8 +49,8 @@ class Lane:
             currentCar.position = [x, y]
 
             # Check if car is in new road/lane. Update topological sorting.
-            if (currentCar.curveType == "line" and currentCar.parameter > self.length) or (
-                    currentCar.curveType == "ellipsis" and currentCar.parameter > np.pi / 2):
+            if (currentCar.lane.curveType == "line" and currentCar.parameter > self.length) or (
+                    currentCar.lane.curveType == "ellipsis" and currentCar.parameter > np.pi / 2):
                 currentCar.parameter = 0
                 currentCar.nextLane.cars.append((currentCar, 0))
                 if currentCar.nextLane.isMerge:
