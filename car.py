@@ -3,7 +3,7 @@ import lane
 
 class Car:
     # A car needs to have an id, position and speed
-    def __init__(self, id: int, position: [float,float] = [0,0], speed: float = 0, parameter: float = 0, orientation: float=0, road: road.Road = None, lane: lane.Lane = None, nextLane: lane.Lane = None, carInFront: "Car" = None, waitTime: float = 0, comfortabilityConstant = 3) -> None:
+    def __init__(self, id: int, position: [float,float] = [0,0], speed: float = 0, parameter: float = 0, orientation: float=0, road: road.Road = None, lane: lane.Lane = None, nextLane: lane.Lane = None, carInFront: "Car" = None, waitTime: float = 0, timeConstant = 1,  comfortabilityConstant = 3) -> None:
         self.id = id
         self.position = position
         self.speed = speed
@@ -14,6 +14,9 @@ class Car:
         self.nextLane = nextLane
         self.carInFront = carInFront
         self.waitTime = waitTime #Time that the car is standing still. Definition of still < 10 ?
+        self.accelerationConstant = 1 / timeConstant
+        self.distanceConstant = 1 / timeConstant**2
+        self.speedConstant = 2 / timeConstant
         self.comfortabilityConstant = comfortabilityConstant #This number should be multiplied with the car speed to find the distance one tries to keep from the next car
 
 
@@ -96,5 +99,37 @@ class Car:
     @waitTime.setter
     def waitTime(self, waitTime: float) -> None:
         self.__waitTime = waitTime
+
+    @property
+    def accelerationConstant(self) -> float:
+        return self.__accelerationConstant
+
+    @accelerationConstant.setter
+    def accelerationConstant(self, accelerationConstant: float) -> None:
+        self.__accelerationConstant = accelerationConstant
+
+    @property
+    def distanceConstant(self) -> float:
+        return self.__distanceConstant
+
+    @distanceConstant.setter
+    def distanceConstant(self, distanceConstant: float) -> None:
+        self.__distanceConstant = distanceConstant
+
+    @property
+    def speedConstant(self) -> float:
+        return self.__speedConstant
+
+    @speedConstant.setter
+    def speedConstant(self, speedConstant: float) -> None:
+        self.__speedConstant = speedConstant
+
+    @property
+    def comfortabilityConstant(self) -> float:
+        return self.__comfortabilityConstant
+
+    @comfortabilityConstant.setter
+    def speedConstant(self, comfortabilityConstant: float) -> None:
+        self.__comfortabilityConstant = comfortabilityConstant
 
     # TODO: We could add types of cars, and thus have pictures that match them. Size might also be needed
