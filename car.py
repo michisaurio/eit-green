@@ -3,7 +3,7 @@ import lane
 
 class Car:
     # A car needs to have an id, position and speed
-    def __init__(self, id: int, position: [float,float] = [0,0], speed: float = 0, parameter: float = 0, orientation: float=0, road: road.Road = None, lane: lane.Lane = None, nextLane: lane.Lane = None, carInFront: "Car" = None, waitTime: float = 0) -> None:
+    def __init__(self, id: int, position: [float,float], speed: float = 0, parameter: float = 0, orientation: float=0, road: road.Road = None, lane: lane.Lane = None, nextLane: lane.Lane = None, carInFront: "Car" = None, waitTime: float = 0) -> None:
         self.id = id
         self.position = position
         self.speed = speed
@@ -68,8 +68,8 @@ class Car:
     def lane(self):
         return self.__lane
 
-    @road.setter
-    def road(self, lane) -> None:
+    @lane.setter
+    def lane(self, lane) -> None:
         self.__lane = lane
 
     @property

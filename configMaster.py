@@ -1,7 +1,7 @@
 from configuration import Configuration
 
 class ConfigMaster:
-    def __init__(self, configurations: [Configuration] = []) -> None:
+    def __init__(self, configurations: [Configuration] = None) -> None:
         self.configurations = configurations
 
     def update(self, timeStep: float) -> None:
@@ -14,4 +14,7 @@ class ConfigMaster:
 
     @configurations.setter
     def configurations(self, configurations: [Configuration]) -> None:
-        self.__configurations = configurations
+        if configurations == None:
+            self.__configurations = []
+        else:
+            self.__configurations = configurations

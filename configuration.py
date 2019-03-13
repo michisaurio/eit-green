@@ -3,7 +3,7 @@ import intersectionConfigs as inCon
 from color import Color
 
 class Configuration:
-    def __init__(self, lights: [Light] = []) -> None:
+    def __init__(self, lights: [Light] = None) -> None:
         self.lights = lights
         self.statelist = inCon.main()
         self.curUpdatingYellowtoRed = False
@@ -39,6 +39,9 @@ class Configuration:
 
     @lights.setter
     def lights(self, lights: [Light]) -> None:
-        self.__lights = lights
+        if lights == None:
+            self.__lights = []
+        else:
+            self.__lights = lights
 
     #TODO: How should the configurations themselves be implemented? A time control might be needed here
