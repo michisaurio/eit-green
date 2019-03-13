@@ -13,6 +13,7 @@ softAllowed = [0, [4, 5, 6, 8, 9, 10, 11, 13, 14], [4, 5, 6, 9, 12, 13, 14, 15],
                [3, 6, 12, 13, 14, 16, 1, 2, 5], [12, 14, 1, 4, 5, 6, 7, 13], [1, 12, 8, 14], [9, 10, 11, 15, 6, 5],
                [16, 1, 2, 4, 5, 6, 9, 7, 10], [16, 2, 5, 8, 9, 10, 1, 11], [2, 5, 16, 12], [13, 14, 15, 3, 6, 9]]
 
+
 # Modifies the restriction list (allowedList) by merging certain nodes such that for instance the light for moving
 # straight forward and taking a turn to the right must be green at the same time (typically because the cars in these
 # two directions start in the same lane).
@@ -77,4 +78,4 @@ def main(mergeList=[], allowedList=notAllowed, deleteList=[]):
 
 
 if __name__ == "__main__":
-    main(allowedList=softAllowed)
+    main(allowedList=notAllowed)
