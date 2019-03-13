@@ -90,11 +90,11 @@ class Lane:
         self.__cars = cars
 
     @property
-    def speedLimit(self):
+    def speedLimit(self) -> int:
         return self.__speedLimit
 
     @speedLimit.setter
-    def cars(self, speedLimit) -> None:
+    def speedLimit(self, speedLimit) -> None:
         self.__speedLimit = speedLimit
 
 
