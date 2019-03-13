@@ -32,15 +32,15 @@ class Lane:
                 acceleration = currentCar.distanceConstant*criticalDistance - currentCar.speedConstant*currentCar.speed
             speed = currentCar.speed + timeStep*acceleration
             currentCar.speed = max(0,min(speed, self.speedLimit)) # Add random number to speedLimit
-            [x, y, vs] = self.curve(car.parameter)
+            [x, y, vs] = self.curve(currentCar.parameter)
             currentCar.parameter = currentCar.parameter + timeStep * currentCar.speed / vs
             [x, y, vs] = self.curve(currentCar.parameter)
             currentCar.position = [x, y]
 
             if i < len(self.cars)-1:
-                next_car = self.cars[i+1][0]
+                self.cars[i].next_car = self.cars[i+1][0]
             else:
-                next_car = currentCar.nextLane.cars[0][0]
+                self.cars[i].next_car = currentCar.nextLane.cars[0][0]
 
             # Check if car is in new road/lane. Update topological sorting.
 
