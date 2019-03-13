@@ -71,8 +71,12 @@ class Lane:
         self.cars = sortedCars
 
     def updateCriticalDistance(self):
+        if len(self.cars) == 0:
+            return
         if self.light.color == Color.RED:
             self.cars[0][1] = self.length - self.cars[0][0].parameter
+        elif len(self.cars[0][0].nextLane.cars) == 0:
+            self.cars[0][1] = np.inf
         else:
             currentCar = self.cars[0][0]
             currentLaneCriticalDistance = self.length - self.cars[0][0].parameter
@@ -84,8 +88,7 @@ class Lane:
             nextCar = currentCar.nextLane.cars[-1][0]
             nextLaneCriticalDistance = nextCar.parameter - currentCar.comfortabilityConstant * currentCar.speed  # how far the next car has travelled from the start of the next lane
             if currentCar.nextLane.curveType == "ellipsis":
-                nextLaneCriticalDistance = currentCar.nextLane.length * currentCar.nextLane.cars[-1][
-                    0].parameter * 2 / (np.pi)  # length of the next car from starting point = length of lane * current angle of car / ending angle of lane
+                nextLaneCriticalDistance = currentCar.nextLane.length * nextCar.parameter * 2 / (np.pi)  # length of the next car from starting point = length of lane * current angle of car / ending angle of lane
             self.cars[0][1] = (currentLaneCriticalDistance + nextLaneCriticalDistance)
 
         nextCar = self.cars[0][0]
@@ -97,18 +100,9 @@ class Lane:
             currentParameter = currentCar.parameter
             if currentCar.lane.curveType == "ellipsis":
                 currentParameter = currentCar.lane.length - project(self, currentCar)
-            self.cars[i][1] = nextParameter - currentParameter * currentCar.speed
-            nextCar = currentCar
+            self.cars[i][1] = nextParameter - currentParameter - currentCar.comfortabilityConstant * currentCar.speed
             nextParameter = currentParameter
 
-    # sort by parameter
-
-    # if i < len(self.cars)-1:
-    #    currentCar.carInFront = self.cars[i+1][0]
-    # else:
-    #    currentCar.carInFront = currentCar.nextLane.cars[0][0]
-
-    # Update critical distances
 
     def spawn(self):
         # TODO: Spawn a new car at the start of the lane if possible
@@ -196,20 +190,20 @@ def curve(lane, parameter):
         yLength = lane.coordinates[3] - lane.coordinates[1]
         x = 0
         y = 0
-        speed = 0
+        vs = 0
         if lane.curveType == "line":
             if xLength == 0:
                 y = lane.coordinates[1] + parameter
-                speed = 1
+                vs = 1
                 x = lane.coordinates[0]
             else:
                 x = lane.coordinates[0] + parameter
-                speed = 1
-                x = lane.coordinates[1]
+                vs = 1
+                y = lane.coordinates[1]
         elif lane.curveType == "ellipsis":
             x = xLength * np.cos(parameter)
             y = yLength * np.sin(parameter)
             xdot = -xLength * np.sin(parameter)
             ydot = yLength * np.cos(parameter)
-            speed = np.sqrt(xdot ** 2 + ydot ** 2)
-        return x, y, speed
+            vs = np.sqrt(xdot ** 2 + ydot ** 2)
+        return x, y, vs
