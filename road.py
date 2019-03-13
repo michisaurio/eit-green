@@ -8,7 +8,7 @@ class Road:
 
     def update(self, timeStep: float) -> None:
         for lane in self.lanes:
-            lane.update(timeStep)
+            lane.updatePositions(timeStep)
 
     @property
     def lanes(self) -> [Lane]:
@@ -18,6 +18,8 @@ class Road:
     def lanes(self, lanes: [Lane]) -> None:
         if lanes == None:
             self.__lanes = []
+        elif type(lanes) != list:
+            print("WARNING: Tried to set lanes to non-list")
         else:
             self.__lanes = lanes
 
