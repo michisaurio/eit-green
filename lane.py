@@ -27,7 +27,7 @@ class Lane:
             self.length = 0.25 * np.pi * (xLength + yLength) * (1 + (3 * h) / (10 + np.sqrt(
                 4 - 3 * h)))  # formula is 1/4 times an approximation of the perimeter of an ellipse, see https://www.mathsisfun.com/geometry/ellipse-perimeter.html
 
-    def update(self, timeStep) -> None: #TODO: take mergelane updating of position into consideration
+    def updatePositions(self, timeStep) -> None: #TODO: take mergelane updating of position into consideration
 
         if (self.spawnRate * timeStep > np.random.uniform(0, 1)):
             self.queue += 1
