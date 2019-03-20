@@ -127,7 +127,9 @@ class Lane:
         return self.__coordinates
 
     @coordinates.setter
-    def coordinates(self, coordinates):
+    def coordinates(self, coordinates: [float, float, float, float]):
+        if not(type(coordinates) == list and len(coordinates) == 4 and ((type(i) in {int, float}) for i in coordinates)):
+            raise TypeError("Expected [float, float, float, float]")
         self.__coordinates = coordinates
 
     @property
@@ -144,6 +146,8 @@ class Lane:
 
     @speedLimit.setter
     def speedLimit(self, speedLimit) -> None:
+        if not type(speedLimit) == int:
+            raise TypeError("Expected integer")
         self.__speedLimit = speedLimit
 
 
@@ -153,6 +157,9 @@ class Lane:
 
     @light.setter
     def light(self, light: Light):
+        if (not type(light) in {Light}) and light is not None:
+            print(type(light))
+            raise TypeError("Expected Light")
         self.__light = light
 
     @property
@@ -161,6 +168,8 @@ class Lane:
 
     @curveType.setter
     def curveType(self, curveType: str):
+        if not type(curveType) == str:
+            raise TypeError("Expected str")
         self.__curveType = curveType
 
     @property
@@ -169,6 +178,8 @@ class Lane:
 
     @spawnRate.setter
     def spawnRate(self, spawnRate):
+        if not type(spawnRate) in {int, float}:
+            TypeError("Expected float or integer")
         self.__spawnRate = spawnRate
 
     @property
@@ -177,6 +188,8 @@ class Lane:
 
     @queue.setter
     def queue(self, queue):
+        if type(queue) != int:
+            raise TypeError("Expected int")
         if queue < 0:
             print("WARNING: You tried to set the queue to less than 0")
         elif (queue == self.queue - 1 or queue == self.queue + 1):

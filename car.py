@@ -39,6 +39,8 @@ class Car:
 
     @position.setter
     def position(self, position: [float, float]) -> None:
+        if not (type(position)==list and len(position) == 2 and (type(position[0])==float or type(position[0]) == int) and (type(position[1])==float or type(position[1]) == int)):
+            raise TypeError("Expected [float, float]")
         self.__position = position
 
     @property
@@ -47,6 +49,10 @@ class Car:
 
     @speed.setter
     def speed(self, speed: float) -> None:
+        if type(speed) == int:
+            speed = float(speed)
+        if not type(speed)== float:
+            raise TypeError("Expected float")
         self.__speed = speed
 
     @property
@@ -55,6 +61,10 @@ class Car:
 
     @parameter.setter
     def parameter(self, parameter: float) -> None:
+        if type(parameter) == int:
+            parameter = float(parameter)
+        if not type(parameter)== float:
+            raise TypeError("Expected float")
         self.__parameter = parameter
 
     @property
@@ -63,6 +73,10 @@ class Car:
 
     @orientation.setter
     def orientation(self, orientation: float) -> None:
+        if type(orientation) == int:
+            orientation = float(orientation)
+        if not type(orientation) == float:
+            raise TypeError("Expected float")
         self.__orientation = orientation
 
     @property
@@ -103,6 +117,10 @@ class Car:
 
     @waitTime.setter
     def waitTime(self, waitTime: float) -> None:
+        if type(waitTime) == int:
+            waitTime = float(waitTime)
+        if not type(waitTime)== float:
+            raise TypeError("Expected float")
         self.__waitTime = waitTime
 
     @property
@@ -111,6 +129,10 @@ class Car:
 
     @accelerationConstant.setter
     def accelerationConstant(self, accelerationConstant: float) -> None:
+        if type(accelerationConstant) == int:
+            accelerationConstant = float(accelerationConstant)
+        if not type(accelerationConstant) == float:
+            raise TypeError("Expected float")
         self.__accelerationConstant = accelerationConstant
 
     @property
@@ -119,6 +141,10 @@ class Car:
 
     @distanceConstant.setter
     def distanceConstant(self, distanceConstant: float) -> None:
+        if type(distanceConstant) == int:
+            distanceConstant = float(distanceConstant)
+        if not type(distanceConstant) == float:
+            raise TypeError("Expected float")
         self.__distanceConstant = distanceConstant
 
     @property
@@ -127,6 +153,10 @@ class Car:
 
     @speedConstant.setter
     def speedConstant(self, speedConstant: float) -> None:
+        if type(speedConstant) == int:
+            speedConstant = float(speedConstant)
+        if not type(speedConstant) == float:
+            raise TypeError("Expected float")
         self.__speedConstant = speedConstant
 
     @property
@@ -135,6 +165,10 @@ class Car:
 
     @comfortabilityConstant.setter
     def comfortabilityConstant(self, comfortabilityConstant: float) -> None:
+        if type(comfortabilityConstant) == int:
+            comfortabilityConstant = float(comfortabilityConstant)
+        if not type(comfortabilityConstant) == float:
+            raise TypeError("Expected float")
         self.__comfortabilityConstant = comfortabilityConstant
 
     @property

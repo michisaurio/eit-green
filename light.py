@@ -13,4 +13,6 @@ class Light:
 
     @color.setter
     def color(self, color: Color) -> None:
+        if not type(color) == Color:
+            raise TypeError("Expected Color")
         self.__color = color
