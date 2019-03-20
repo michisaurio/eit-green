@@ -4,7 +4,7 @@ from car import Car
 import numpy as np
 
 class Lane:
-    def __init__(self, coordinates, speedLimit, light: Light = None, curveType="line", spawnRate=0.0, queue=0,
+    def __init__(self, coordinates, speedLimit, light: Light = None, passDetector: InductionLoopPassing = None, presenceDetector: InductionLoopPresence = None, curveType="line", spawnRate=0.0, queue=0,
                  isMerge=False, width = 3.5) -> None:
         self.coordinates = coordinates  # Start and end coordinates in a list [x.start, y.start, x.end, y.end]. For mergelanes, these are the coordinates of the straight lane.
         self.cars = []  # List with list of cars in the lane and their critical distance [car, criticalDistance]. Assumed topologically sorted such that the first element is the frontmost car in the lane.
@@ -32,6 +32,7 @@ class Lane:
 
     def updatePositions(self, timeStep) -> None: #TODO: take mergelane updating of position into consideration
 
+        # Car objects spawned according to a Poisson process (with predetermined mean val?)
         if (self.spawnRate * timeStep > np.random.uniform(0, 1)):
             self.queue += 1
         if self.queue > 0 and self.cars[-1][0].parameter > 12:  # TODO : The parameter here defines how far the first car has come
@@ -70,6 +71,20 @@ class Lane:
                 i -= 1
             i += 1
         self.updateCriticalDistance()
+
+        # After new position,  check if they are within the area covered by detectors
+        car = self.cars[0] # change to for loop when code works for one car
+        # Is current car within the pass detector?
+        if car.position[0] >= passDetector.position[0] and car.position[0] <= passDetector.position[0] + passDetector.length:
+            if passDetector.isDetected()
+                light.incrementCountdown(3)  # add 3 seconds to green light for cars
+
+        # Check if it's within the area covered by the next one (presenceDetector)
+        elif car.position[0] >= presenceDetector.position[0] and car.position[0] >= presenceDetector.position[0] + presenceDetector.length:
+            # Check if it's detected
+            if presenceDetecter.isDetected():
+                if light.green_countdown > 0:
+                    light.dont_change_color() # should delay a color change if max green time is not used up
 
     def updateTopologicalSort(self):
         sortedCars = []
