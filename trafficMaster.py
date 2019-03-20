@@ -8,7 +8,7 @@ import car
 import color
 
 window = pyglet.window.Window(width=400, height=400)
-car_image = pyglet.resource.image("images/ship.png")
+car_image = pyglet.resource.image("images/car_black.png")
 global_car_batch = pyglet.graphics.Batch()
 global_lane_batch = pyglet.graphics.Batch()
 global_light_batch = pyglet.graphics.Batch()
@@ -43,7 +43,7 @@ class TrafficMaster:
                 for car in lane.cars:
                     global global_car_batch
                     sprite = pyglet.sprite.Sprite(car_image, *car[0].position, batch=global_car_batch)
-                    sprite.update(rotation=math.degrees(car[0].orientation)+90)
+                    sprite.update(rotation=math.degrees(car[0].orientation))
                     self.car_sprites.append(sprite)
                     print(car[0].position)
 

@@ -7,11 +7,11 @@ import color
 
 def main():
     lane1 = Lane(coordinates=[200,100,400,200], speedLimit=20, curveType="ellipsis")
-    nextLane = Lane(coordinates=[100, 60, 200, 60], speedLimit=20)
+    lane1 = Lane(coordinates=[100, 60, 200, 60], speedLimit=20)
     car1 = Car([20, 60])
     car1.lane = lane1
     lane1.cars = [[car1, 20]]
-    light = Light(1)
+    light = Light()
     lane1.light = light
     light.color = color.Color.GREEN
     road1 = Road(lanes=[lane1])

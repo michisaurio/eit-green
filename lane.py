@@ -24,7 +24,6 @@ class Lane:
             else:
                 self.length = xLength
         elif (curveType == "ellipsis"):
-            print("I was here")
             h = (xLength - yLength) ** 2 / (
                     xLength + yLength) ** 2  # mathematical parameter only used to simplify expression below
             self.length = 0.25 * np.pi * (xLength + yLength) * (1 + (3 * h) / (10 + np.sqrt(
