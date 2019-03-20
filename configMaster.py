@@ -17,6 +17,6 @@ class ConfigMaster:
         if configurations == None:
             self.__configurations = []
         else:
-            if any(type(i) != Configuration for i in configurations):
+            if not all(isinstance(i, Configuration) for i in configurations):
                 raise TypeError("Expected list of Configuration")
             self.__configurations = configurations

@@ -49,7 +49,7 @@ class Configuration:
         if lights == None:
             self.__lights = []
         else:
-            if any(type(i) != Light for i in lights):
+            if not all(isinstance(i, Light) for i in lights):
                 raise TypeError("Expected list of Configuration")
             self.__lights = lights
 

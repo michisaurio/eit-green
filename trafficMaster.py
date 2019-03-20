@@ -8,7 +8,7 @@ import car
 import color
 
 window = pyglet.window.Window(width=400, height=400)
-car_image = pyglet.resource.image("ship.png")
+car_image = pyglet.resource.image("images/ship.png")
 global_car_batch = pyglet.graphics.Batch()
 global_lane_batch = pyglet.graphics.Batch()
 global_light_batch = pyglet.graphics.Batch()
