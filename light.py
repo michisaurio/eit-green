@@ -2,8 +2,9 @@ from color import Color
 
 class Light:
 
-    def __init__(self, id: int, green_max_time: int, green_countdown: int, color: Color = Color.RED) -> None:
-        self.id = id
+    numberOfLights = 1
+    def __init__(self, green_max_time: int, green_countdown: int, color: Color = Color.RED) -> None:
+        self.id = Light.numberOfLights
         self.color = color
         self.green_max_time = green_max_time
         self.green_countdown = green_countdown
@@ -15,11 +16,22 @@ class Light:
         self.__color = Color.YELLOW
 
     @property
+    def id(self) -> int:
+        return self.__id
+
+    @id.setter
+    def id(self, id: int) -> None:
+        self.__id = Light.numberOfLights
+        Light.numberOfLights += 1
+
+    @property
     def color(self) -> Color:
         return self.__color
 
     @color.setter
     def color(self, color: Color) -> None:
+      if not isinstance(color, Color):
+            raise TypeError("Expected Color")
         self.__color = color
 
     @property
@@ -27,7 +39,7 @@ class Light:
         return self.__green_max_time
 
     @green_max_time.setter
-    def green_max_time(self, green_max_time) -> None:
+    def green_max_time(self, green_max_time: int) -> None:
         self.__green_max_time = green_max_time
 
     @property
@@ -35,5 +47,5 @@ class Light:
         return self.__green_countdown
 
     @green_countdown.setter
-    def green_countdown(self, green_countdown) -> None:
+    def green_countdown(self, green_countdown: int) -> None:
         self.__green_countdown = green_countdown

@@ -14,7 +14,7 @@ class Lane:
         self.length = 0
         self.spawnRate = spawnRate
         self.__queue = queue #Let the constructor overload the setter method to make sure that the queue exists
-        self.isMerge = isMerge  # TODO: implement getters and setters
+        self.isMerge = isMerge
         self.width = width
         xLength = coordinates[2] - coordinates[0]
         yLength = coordinates[3] - coordinates[1]
@@ -24,7 +24,6 @@ class Lane:
             else:
                 self.length = xLength
         elif (curveType == "ellipsis"):
-            print("I was here")
             h = (xLength - yLength) ** 2 / (
                     xLength + yLength) ** 2  # mathematical parameter only used to simplify expression below
             self.length = 0.25 * np.pi * (xLength + yLength) * (1 + (3 * h) / (10 + np.sqrt(
@@ -102,7 +101,7 @@ class Lane:
             return
         if self.light.color == Color.RED:
             self.cars[0][1] = self.length - self.cars[0][0].parameter
-        elif self.cars[0][0].nextLane == None or len(self.cars[0][0].nextLane.cars) == 0: #TODO : Check if none
+        elif self.cars[0][0].nextLane == None or len(self.cars[0][0].nextLane.cars) == 0:
             self.cars[0][1] = np.inf
         else:
             currentCar = self.cars[0][0]
@@ -142,7 +141,9 @@ class Lane:
         return self.__coordinates
 
     @coordinates.setter
-    def coordinates(self, coordinates):
+    def coordinates(self, coordinates: [float, float, float, float]):
+        if not(type(coordinates) == list and len(coordinates) == 4 and (isinstance(i, (float, int)) for i in coordinates)):
+            raise TypeError("Expected [float, float, float, float]")
         self.__coordinates = coordinates
 
     @property
@@ -159,6 +160,8 @@ class Lane:
 
     @speedLimit.setter
     def speedLimit(self, speedLimit) -> None:
+        if not isinstance(speedLimit, int):
+            raise TypeError("Expected integer")
         self.__speedLimit = speedLimit
 
 
@@ -168,6 +171,8 @@ class Lane:
 
     @light.setter
     def light(self, light: Light):
+        if not isinstance(light, Light) and light is not None:
+            raise TypeError("Expected Light")
         self.__light = light
 
     @property
@@ -176,6 +181,10 @@ class Lane:
 
     @curveType.setter
     def curveType(self, curveType: str):
+        if not isinstance(curveType, str):
+            raise TypeError("Expected str")
+        if not curveType in {"line", "ellipsis"}:
+            raise ValueError("Type of curve does not exist")
         self.__curveType = curveType
 
     @property
@@ -184,6 +193,8 @@ class Lane:
 
     @spawnRate.setter
     def spawnRate(self, spawnRate):
+        if not isinstance(spawnRate, (float, int)):
+            TypeError("Expected float or integer")
         self.__spawnRate = spawnRate
 
     @property
@@ -192,6 +203,8 @@ class Lane:
 
     @queue.setter
     def queue(self, queue):
+        if not isinstance(queue, int):
+            raise TypeError("Expected int")
         if queue < 0:
             print("WARNING: You tried to set the queue to less than 0")
         elif (queue == self.queue - 1 or queue == self.queue + 1):
@@ -199,7 +212,6 @@ class Lane:
         else:
             print("WARNING: You tried to change queue by more than 1")
 
-    # TODO: How should we implement this? What is the type of curve?
 
     @property
     def isMerge(self):
@@ -247,4 +259,6 @@ def curve(lane, parameter):
             ydot = yLength * np.cos(parameter)
             vs = np.sqrt(xdot ** 2 + ydot ** 2)
             orientation = np.arctan2(ydot,xdot)
+        if not 'orientation' in locals():
+            raise ValueError("No orientation was set")
         return x, y, vs, orientation
