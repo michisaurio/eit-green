@@ -3,7 +3,9 @@
 class Car:
     numberOfCars = 1
     # A car needs to have an id, position and speed
-    def __init__(self, position: [float,float], speed: float = 0, parameter: float = 0, orientation: float=0, road = None, lane = None, nextLane = None, carInFront: "Car" = None, waitTime: float = 0, timeConstant = 1,  comfortabilityConstant = 3) -> None:
+    def __init__(self, position: [float,float], speed: float = 0, parameter: float = 0, orientation: float=0, road = None,
+                 lane = None, nextLane = None, carInFront: "Car" = None, waitTime: float = 0, timeConstant = 1,
+                 comfortabilityConstant = 3, length = 4.5, width = 1.8) -> None:
         self.id = Car.numberOfCars
         self.position = position
         self.speed = speed
@@ -18,6 +20,8 @@ class Car:
         self.distanceConstant = 1 / timeConstant**2
         self.speedConstant = 2 / timeConstant
         self.comfortabilityConstant = comfortabilityConstant #This number should be multiplied with the car speed to find the distance one tries to keep from the next car
+        self.length = length
+        self.width = width
 
 
     @property
@@ -132,5 +136,21 @@ class Car:
     @comfortabilityConstant.setter
     def comfortabilityConstant(self, comfortabilityConstant: float) -> None:
         self.__comfortabilityConstant = comfortabilityConstant
+
+    @property
+    def length(self) -> float:
+        return self.__length
+
+    @length.setter
+    def length(self, length: float) -> None:
+        self.__length = length
+
+    @property
+    def width(self) -> float:
+        return self.__width
+
+    @length.setter
+    def width(self, width: float) -> None:
+        self.__width = width
 
     # TODO: We could add types of cars, and thus have pictures that match them. Size might also be needed
