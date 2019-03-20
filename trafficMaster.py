@@ -24,6 +24,9 @@ class TrafficMaster:
         for road in self.roads:
             road.update(timeStep)
 
+    def setLaneSprites(self):
+        pass
+
     def draw(self, dt) -> None:
         self.car_sprites = []
         for road in self.roads:
@@ -38,6 +41,8 @@ class TrafficMaster:
 
 trafficM = TrafficMaster()
 
+
+
 @window.event
 def on_draw() -> None:
     window.clear()
@@ -45,5 +50,8 @@ def on_draw() -> None:
     light_batch.draw()
     car_batch.draw()
 
-pyglet.clock.schedule(trafficM.draw)
-pyglet.app.run()
+
+def runPyglet():
+    trafficM.setLaneSprites()
+    pyglet.clock.schedule(trafficM.draw)
+    pyglet.app.run()

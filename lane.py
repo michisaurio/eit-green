@@ -41,6 +41,8 @@ class Lane:
                 acceleration = currentCar.accelerationConstant*(self.speedLimit - currentCar.speed)
             else:
                 acceleration = currentCar.distanceConstant * criticalDistance - currentCar.speedConstant * currentCar.speed
+                print("I was here")
+
             speed = currentCar.speed + timeStep * acceleration
             currentCar.speed = max(0, min(speed, self.speedLimit))  # Add random number to speedLimit
             [x, y, vs] = curve(currentCar.lane, currentCar.parameter)
