@@ -15,8 +15,8 @@ class Lane:
         self.spawnRate = spawnRate
         self.__queue = queue #Let the constructor overload the setter method to make sure that the queue exists
         self.isMerge = isMerge  # TODO: implement getters and setters
-        xLength = coordinates[2] - coordinates[0]
-        yLength = coordinates[3] - coordinates[1]
+        xLength = abs(coordinates[2] - coordinates[0])
+        yLength = abs(coordinates[3] - coordinates[1])
         if(curveType == "line" or curveType == "merge"):
             if(xLength == 0):
                 self.length = yLength
