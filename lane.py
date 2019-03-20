@@ -41,7 +41,6 @@ class Lane:
                 acceleration = currentCar.accelerationConstant*(self.speedLimit - currentCar.speed)
             else:
                 acceleration = currentCar.distanceConstant * criticalDistance - currentCar.speedConstant * currentCar.speed
-                print("I was here")
 
             speed = currentCar.speed + timeStep * acceleration
             currentCar.speed = max(0, min(speed, self.speedLimit))  # Add random number to speedLimit
@@ -60,6 +59,7 @@ class Lane:
                 currentCar.lane = currentCar.nextLane
                 currentCar.nextLane = None  # TODO: give the car a proper nextLane
                 self.cars.pop(0)
+        self.updateCriticalDistance()
 
     def updateTopologicalSort(self):
         sortedCars = []
@@ -73,11 +73,13 @@ class Lane:
         self.cars = sortedCars
 
     def updateCriticalDistance(self):
+        return
+        print("Updated critical distances")
         if len(self.cars) == 0:
             return
         if self.light.color == Color.RED:
             self.cars[0][1] = self.length - self.cars[0][0].parameter
-        elif len(self.cars[0][0].nextLane.cars) == 0:
+        elif len(self.cars[0][0].nextLane.cars) == 0: #TODO : Check if none
             self.cars[0][1] = np.inf
         else:
             currentCar = self.cars[0][0]
