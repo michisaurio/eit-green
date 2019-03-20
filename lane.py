@@ -14,7 +14,7 @@ class Lane:
         self.length = 0
         self.spawnRate = spawnRate
         self.__queue = queue #Let the constructor overload the setter method to make sure that the queue exists
-        self.isMerge = isMerge  # TODO: implement getters and setters
+        self.isMerge = isMerge
         self.width = width
         xLength = coordinates[2] - coordinates[0]
         yLength = coordinates[3] - coordinates[1]
@@ -86,7 +86,7 @@ class Lane:
             return
         if self.light.color == Color.RED:
             self.cars[0][1] = self.length - self.cars[0][0].parameter
-        elif self.cars[0][0].nextLane == None or len(self.cars[0][0].nextLane.cars) == 0: #TODO : Check if none
+        elif self.cars[0][0].nextLane == None or len(self.cars[0][0].nextLane.cars) == 0:
             self.cars[0][1] = np.inf
         else:
             currentCar = self.cars[0][0]
@@ -197,7 +197,6 @@ class Lane:
         else:
             print("WARNING: You tried to change queue by more than 1")
 
-    # TODO: How should we implement this? What is the type of curve?
 
     @property
     def isMerge(self):
@@ -245,4 +244,6 @@ def curve(lane, parameter):
             ydot = yLength * np.cos(parameter)
             vs = np.sqrt(xdot ** 2 + ydot ** 2)
             orientation = np.arctan2(ydot,xdot)
+        if not 'orientation' in locals():
+            raise ValueError("No orientation was set")
         return x, y, vs, orientation
