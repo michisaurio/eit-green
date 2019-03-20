@@ -1,10 +1,10 @@
-import road
-import lane
+
 
 class Car:
+    numberOfCars = 1
     # A car needs to have an id, position and speed
-    def __init__(self, id: int, position: [float,float], speed: float = 0, parameter: float = 0, orientation: float=0, road: road.Road = None, lane: lane.Lane = None, nextLane: lane.Lane = None, carInFront: "Car" = None, waitTime: float = 0, timeConstant = 1,  comfortabilityConstant = 3) -> None:
-        self.id = id
+    def __init__(self, position: [float,float], speed: float = 0, parameter: float = 0, orientation: float=0, road = None, lane = None, nextLane = None, carInFront: "Car" = None, waitTime: float = 0, timeConstant = 1,  comfortabilityConstant = 3) -> None:
+        self.id = Car.numberOfCars
         self.position = position
         self.speed = speed
         self.parameter = parameter
@@ -26,7 +26,8 @@ class Car:
 
     @id.setter
     def id(self, id: int) -> None:
-        self.__id = id
+        self.__id = Car.numberOfCars
+        Car.numberOfCars += 1
 
     @property
     def position(self) -> [float, float]:
@@ -61,7 +62,7 @@ class Car:
         self.__orientation = orientation
 
     @property
-    def road(self) -> road.Road:
+    def road(self):
         return self.__road
 
     @road.setter

@@ -5,6 +5,7 @@ from pyglet.gl import *
 import road
 import lane
 import car
+import color
 
 window = pyglet.window.Window(width=400, height=400)
 car_image = pyglet.resource.image("ship.png")
@@ -16,6 +17,7 @@ global_light_batch = pyglet.graphics.Batch()
 class TrafficMaster:
     #TODO : How is an initial environment set up? Json? I don't know
     def __init__(self) -> None:
+        self.i = 1
         self.configMaster = ConfigMaster() #TODO: How should the configMaster get its configurations?
         self.roads = []
         self.car_sprites = []
@@ -44,6 +46,7 @@ class TrafficMaster:
                     sprite.update(rotation=math.degrees(car[0].orientation)+90)
                     self.car_sprites.append(sprite)
                     print(car[0].position)
+
     #TODO: Be able to draw car and also rotate it. Should probably be a .png file? Make a function that does this. Input lane+car. Should get the rotation
     # for car: drawCar(car.position, rotation(car.position(?), lane))
 

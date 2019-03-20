@@ -1,12 +1,13 @@
 from light import Light
 from color import Color
+from car import Car
 import numpy as np
 
 class Lane:
     def __init__(self, coordinates, speedLimit, light: Light = None, curveType="line", spawnRate=0.0, queue=0,
                  isMerge=False) -> None:
         self.coordinates = coordinates  # Start and end coordinates in a list [x.start, y.start, x.end, y.end]. For mergelanes, these are the coordinates of the straight lane.
-        self.cars = []  # List with tuples of cars in the lane and their critical distance(car, criticalDistance). Assumed topologically sorted such that the first element is the frontmost car in the lane.
+        self.cars = []  # List with list of cars in the lane and their critical distance [car, criticalDistance]. Assumed topologically sorted such that the first element is the frontmost car in the lane.
         self.speedLimit = speedLimit
         self.light = light
         self.curveType = curveType #String specifying if the curve is an ellipsis, line, laneswitch or merge
@@ -22,6 +23,7 @@ class Lane:
             else:
                 self.length = xLength
         elif (curveType == "ellipsis"):
+            print("I was here")
             h = (xLength - yLength) ** 2 / (
                     xLength + yLength) ** 2  # mathematical parameter only used to simplify expression below
             self.length = 0.25 * np.pi * (xLength + yLength) * (1 + (3 * h) / (10 + np.sqrt(
@@ -31,10 +33,13 @@ class Lane:
 
         if (self.spawnRate * timeStep > np.random.uniform(0, 1)):
             self.queue += 1
-        if self.queue > 0:  # and there is space
+        if self.queue > 0 and self.cars[-1][0].parameter > 12:  # TODO : The parameter here defines how far the first car has come
             self.spawn()
 
-        for i in range(len(self.cars)):
+        i = 0
+        while True:
+            if i >= len(self.cars):
+                break
             # TODO: This is where the car should drive and check for collision etc
             (currentCar, criticalDistance) = self.cars[i]
             if criticalDistance > 2 * currentCar.speed * currentCar.comfortabilityConstant: #TODO: Tune this threshold
@@ -53,12 +58,15 @@ class Lane:
             if (currentCar.lane.curveType == "line" and currentCar.parameter > self.length) or (
                     currentCar.lane.curveType == "ellipsis" and currentCar.parameter > np.pi / 2):
                 currentCar.parameter = 0
-                currentCar.nextLane.cars.append((currentCar, 0))
-                if currentCar.nextLane.isMerge:
-                    currentCar.nextLane.updateTopologicalSorting()  # should remove the car from its own lane and put it in merge
-                currentCar.lane = currentCar.nextLane
+                if currentCar.nextLane:
+                    currentCar.nextLane.cars.append((currentCar, 0))
+                    if currentCar.nextLane.isMerge:
+                        currentCar.nextLane.updateTopologicalSorting()  # should remove the car from its own lane and put it in merge
+                    currentCar.lane = currentCar.nextLane
                 currentCar.nextLane = None  # TODO: give the car a proper nextLane
                 self.cars.pop(0)
+                i -= 1
+            i += 1
         self.updateCriticalDistance()
 
     def updateTopologicalSort(self):
@@ -73,13 +81,11 @@ class Lane:
         self.cars = sortedCars
 
     def updateCriticalDistance(self):
-        return
-        print("Updated critical distances")
         if len(self.cars) == 0:
             return
         if self.light.color == Color.RED:
             self.cars[0][1] = self.length - self.cars[0][0].parameter
-        elif len(self.cars[0][0].nextLane.cars) == 0: #TODO : Check if none
+        elif self.cars[0][0].nextLane == None or len(self.cars[0][0].nextLane.cars) == 0: #TODO : Check if none
             self.cars[0][1] = np.inf
         else:
             currentCar = self.cars[0][0]
@@ -88,7 +94,6 @@ class Lane:
                 currentLaneCriticalDistance = project(self, currentCar)
             if currentLaneCriticalDistance > 2*currentCar.speed*currentCar.comfortabilityConstant:
                 self.cars[0][1] = currentLaneCriticalDistance
-                pass
             nextCar = currentCar.nextLane.cars[-1][0]
             nextLaneCriticalDistance = nextCar.parameter - currentCar.comfortabilityConstant * currentCar.speed  # how far the next car has travelled from the start of the next lane
             if currentCar.nextLane.curveType == "ellipsis":
@@ -109,9 +114,7 @@ class Lane:
 
 
     def spawn(self):
-        # TODO: Spawn a new car at the start of the lane if possible
-        # REMEMBER TO DECREASE QUEUE !!!!!
-        pass
+        self.cars.append([Car([self.coordinates[0], self.coordinates[1]], lane=self), 0])
 
 
     def desiredSpeed(self):
@@ -180,6 +183,14 @@ class Lane:
             print("WARNING: You tried to change queue by more than 1")
 
     # TODO: How should we implement this? What is the type of curve?
+
+    @property
+    def isMerge(self):
+        return self.__isMerge
+
+    @isMerge.setter
+    def isMerge(self, isMerge):
+        self.__isMerge = isMerge
 
 
 def project(mergeLane, car):
