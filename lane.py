@@ -1,6 +1,7 @@
 from light import Light
 from color import Color
 from car import Car
+from sensor import InductionLoopPassing, InductionLoopPresence, InductionLoopCounter
 import numpy as np
 
 class Lane:
@@ -74,16 +75,16 @@ class Lane:
         # After new position,  check if they are within the area covered by detectors
         car = self.cars[0] # change to for loop when code works for one car
         # Is current car within the pass detector?
-        if car.position[0] >= passDetector.position[0] and car.position[0] <= passDetector.position[0] + passDetector.length:
-            if passDetector.isDetected()
-                light.incrementCountdown(3)  # add 3 seconds to green light for cars
+        if car.position[0] >= self.passDetector.position[0] and car.position[0] <= self.passDetector.position[0] + self.passDetector.length:
+            if self.passDetector.isDetected():
+                self.light.incrementCountdown(3)  # add 3 seconds to green light for cars
 
         # Check if it's within the area covered by the next one (presenceDetector)
-        elif car.position[0] >= presenceDetector.position[0] and car.position[0] >= presenceDetector.position[0] + presenceDetector.length:
+        elif car.position[0] >= self.presenceDetector.position[0] and car.position[0] >= self.presenceDetector.position[0] + self.presenceDetector.length:
             # Check if it's detected
-            if presenceDetecter.isDetected():
-                if light.green_countdown > 0:
-                    light.dont_change_color() # should delay a color change if max green time is not used up
+            if self.presenceDetecter.isDetected():
+                if self.light.green_countdown > 0:
+                    self.light.dont_change_color() # should delay a color change if max green time is not used up
 
     def updateTopologicalSort(self):
         sortedCars = []
