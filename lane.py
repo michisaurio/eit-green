@@ -168,6 +168,8 @@ class Lane:
     def curveType(self, curveType: str):
         if not isinstance(curveType, str):
             raise TypeError("Expected str")
+        if not curveType in {"line", "ellipsis"}:
+            raise ValueError("Type of curve does not exist")
         self.__curveType = curveType
 
     @property

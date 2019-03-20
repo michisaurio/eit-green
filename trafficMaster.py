@@ -2,10 +2,6 @@ from configMaster import ConfigMaster
 import math
 import pyglet
 from pyglet.gl import *
-import road
-import lane
-import car
-import color
 
 window = pyglet.window.Window(width=400, height=400)
 car_image = pyglet.resource.image("images/car_black.png")
