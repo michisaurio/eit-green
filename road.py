@@ -19,7 +19,9 @@ class Road:
         if lanes == None:
             self.__lanes = []
         elif type(lanes) != list:
-            print("WARNING: Tried to set lanes to non-list")
+            raise TypeError("Expected list of Lane")
+        elif any(type(i) != Lane for i in lanes):
+            raise TypeError("Expected list of Lane")
         else:
             self.__lanes = lanes
 

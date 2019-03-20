@@ -5,7 +5,7 @@ import numpy as np
 
 class Lane:
     def __init__(self, coordinates, speedLimit, light: Light = None, curveType="line", spawnRate=0.0, queue=0,
-                 isMerge=False) -> None:
+                 isMerge=False, width = 3.5) -> None:
         self.coordinates = coordinates  # Start and end coordinates in a list [x.start, y.start, x.end, y.end]. For mergelanes, these are the coordinates of the straight lane.
         self.cars = []  # List with list of cars in the lane and their critical distance [car, criticalDistance]. Assumed topologically sorted such that the first element is the frontmost car in the lane.
         self.speedLimit = speedLimit
@@ -15,8 +15,9 @@ class Lane:
         self.spawnRate = spawnRate
         self.__queue = queue #Let the constructor overload the setter method to make sure that the queue exists
         self.isMerge = isMerge  # TODO: implement getters and setters
-        xLength = abs(coordinates[2] - coordinates[0])
-        yLength = abs(coordinates[3] - coordinates[1])
+        self.width = width
+        xLength = coordinates[2] - coordinates[0]
+        yLength = coordinates[3] - coordinates[1]
         if(curveType == "line" or curveType == "merge"):
             if(xLength == 0):
                 self.length = yLength
@@ -49,10 +50,11 @@ class Lane:
 
             speed = currentCar.speed + timeStep * acceleration
             currentCar.speed = max(0, min(speed, self.speedLimit))  # Add random number to speedLimit
-            [x, y, vs] = curve(currentCar.lane, currentCar.parameter)
+            [x, y, vs, orientation] = curve(currentCar.lane, currentCar.parameter)
             currentCar.parameter = currentCar.parameter + timeStep * currentCar.speed / vs
-            [x, y, vs] = curve(currentCar.lane, currentCar.parameter)
+            [x, y, vs, orientation] = curve(currentCar.lane, currentCar.parameter)
             currentCar.position = [x, y]
+            currentCar.orientation = orientation
 
             # Check if car is in new road/lane. Update topological sorting.
             if (currentCar.lane.curveType == "line" and currentCar.parameter > self.length) or (
@@ -125,7 +127,9 @@ class Lane:
         return self.__coordinates
 
     @coordinates.setter
-    def coordinates(self, coordinates):
+    def coordinates(self, coordinates: [float, float, float, float]):
+        if not(type(coordinates) == list and len(coordinates) == 4 and ((type(i) in {int, float}) for i in coordinates)):
+            raise TypeError("Expected [float, float, float, float]")
         self.__coordinates = coordinates
 
     @property
@@ -142,6 +146,8 @@ class Lane:
 
     @speedLimit.setter
     def speedLimit(self, speedLimit) -> None:
+        if not type(speedLimit) == int:
+            raise TypeError("Expected integer")
         self.__speedLimit = speedLimit
 
 
@@ -151,6 +157,9 @@ class Lane:
 
     @light.setter
     def light(self, light: Light):
+        if (not type(light) in {Light}) and light is not None:
+            print(type(light))
+            raise TypeError("Expected Light")
         self.__light = light
 
     @property
@@ -159,6 +168,8 @@ class Lane:
 
     @curveType.setter
     def curveType(self, curveType: str):
+        if not type(curveType) == str:
+            raise TypeError("Expected str")
         self.__curveType = curveType
 
     @property
@@ -167,6 +178,8 @@ class Lane:
 
     @spawnRate.setter
     def spawnRate(self, spawnRate):
+        if not type(spawnRate) in {int, float}:
+            TypeError("Expected float or integer")
         self.__spawnRate = spawnRate
 
     @property
@@ -175,6 +188,8 @@ class Lane:
 
     @queue.setter
     def queue(self, queue):
+        if type(queue) != int:
+            raise TypeError("Expected int")
         if queue < 0:
             print("WARNING: You tried to set the queue to less than 0")
         elif (queue == self.queue - 1 or queue == self.queue + 1):
@@ -192,6 +207,13 @@ class Lane:
     def isMerge(self, isMerge):
         self.__isMerge = isMerge
 
+    @property
+    def width(self):
+        return self.__width
+
+    @width.setter
+    def width(self, width):
+        self.__width = width
 
 def project(mergeLane, car):
     velocityProportionalityConstant = mergeLane.speedLimit / car.lane.speedLimit  # Not the best approximation
@@ -215,10 +237,12 @@ def curve(lane, parameter):
                 x = lane.coordinates[0] + parameter
                 vs = 1
                 y = lane.coordinates[1]
+            orientation = np.arctan2(yLength, xLength)
         elif lane.curveType == "ellipsis":
             x = xLength * np.cos(parameter)
             y = yLength * np.sin(parameter)
             xdot = -xLength * np.sin(parameter)
             ydot = yLength * np.cos(parameter)
             vs = np.sqrt(xdot ** 2 + ydot ** 2)
-        return x, y, vs
+            orientation = np.arctan2(ydot,xdot)
+        return x, y, vs, orientation
