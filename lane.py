@@ -72,19 +72,11 @@ class Lane:
             i += 1
         self.updateCriticalDistance()
 
-        # After new position,  check if they are within the area covered by detectors
-        car = self.cars[0] # change to for loop when code works for one car
-        # Is current car within the pass detector?
-        if car.position[0] >= self.passDetector.position[0] and car.position[0] <= self.passDetector.position[0] + self.passDetector.length:
-            if self.passDetector.isDetected():
-                self.light.incrementCountdown(3)  # add 3 seconds to green light for cars
 
-        # Check if it's within the area covered by the next one (presenceDetector)
-        elif car.position[0] >= self.presenceDetector.position[0] and car.position[0] >= self.presenceDetector.position[0] + self.presenceDetector.length:
-            # Check if it's detected
-            if self.presenceDetecter.isDetected():
-                if self.light.green_countdown > 0:
-                    self.light.dont_change_color() # should delay a color change if max green time is not used up
+
+    def getSensorSignal(self, startParameter: float, endParameter: float) -> bool: # Check if there exists a car within the sensors parameter
+        return any(startParameter < car[0].parameter < endParameter for car in self.cars)
+
 
     def updateTopologicalSort(self):
         sortedCars = []
