@@ -45,6 +45,10 @@ class Lane:
                 break
             # TODO: This is where the car should drive and check for collision etc
             (currentCar, criticalDistance) = self.cars[i]
+            if currentCar.id == 3:
+                print("id: ", currentCar.id, "crit dist: ", criticalDistance, "Curve type: ", currentCar.lane.curveType)
+            if currentCar.id == 2:
+                print("id: ", currentCar.id, "crit dist: ", criticalDistance, "Curve type: ", currentCar.lane.curveType)
             if criticalDistance > 2 * currentCar.speed * currentCar.comfortabilityConstant: #TODO: Tune this threshold
                 acceleration = currentCar.accelerationConstant*(self.speedLimit - currentCar.speed)
             else:
@@ -67,7 +71,7 @@ class Lane:
                     if currentCar.nextLane.isMerge:
                         currentCar.nextLane.updateTopologicalSorting()  # should remove the car from its own lane and put it in merge
                     currentCar.lane = currentCar.nextLane
-                currentCar.nextLane = None  # TODO: give the car a proper nextLane
+                    currentCar.nextLane = currentCar.lane.selectNextLane()  # TODO: give the car a proper nextLane
                 self.cars.pop(0)
                 i -= 1
             i += 1
@@ -103,7 +107,7 @@ class Lane:
             if currentCar.lane.curveType == "ellipsis":
                 currentLaneCriticalDistance = project(self, currentCar)
             if currentLaneCriticalDistance > 2*currentCar.speed*currentCar.comfortabilityConstant:
-                self.cars[0][1] = currentLaneCriticalDistance
+                self.cars[0][1] = np.inf
             nextCar = currentCar.nextLane.cars[-1][0]
             nextLaneCriticalDistance = nextCar.parameter - currentCar.comfortabilityConstant * currentCar.speed  # how far the next car has travelled from the start of the next lane
             if currentCar.nextLane.curveType == "ellipsis":
@@ -133,6 +137,7 @@ class Lane:
 
     def selectNextLane(self):
         if self.nextLanes:
+            print(self.nextLanes)
             rndNum = np.random.uniform(0,1)
             for lane in self.nextLanes:
                 if lane[1] > rndNum:
