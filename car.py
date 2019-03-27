@@ -4,7 +4,7 @@ class Car:
     numberOfCars = 1
     # A car needs to have an id, position and speed
     def __init__(self, position: [float,float], speed: float = 0, parameter: float = 0, orientation: float=0, road = None,
-                 lane = None, nextLane = None, carInFront: "Car" = None, waitTime: float = 0, timeConstant = 1,
+                 lane = None, nextLane = None, carInFront: "Car" = None, waitTime: float = 0, timeConstant = 0.8,
                  comfortabilityConstant = 1.5, length = 4.5, width = 1.8) -> None:
         self.id = Car.numberOfCars
         self.position = position
