@@ -236,16 +236,16 @@ def curve(lane, parameter):
         vs = 0
         if lane.curveType == "line":
             if xLength == 0:
-                y = lane.coordinates[1] + parameter
+                y = lane.coordinates[1] + np.sign(yLength) * parameter
                 vs = 1
                 x = lane.coordinates[0]
             else:
-                x = lane.coordinates[0] + parameter
+                x = lane.coordinates[0] + np.sign(xLength) * parameter
                 vs = 1
                 y = lane.coordinates[1]
             orientation = np.arctan2(yLength, xLength)
         elif lane.curveType == "ellipsis":
-            x = lane.coordinates[0] + xLength * np.cos(np.pi-parameter)
+            x = lane.coordinates[0] + xLength * np.cos(parameter)
             y = lane.coordinates[1] + yLength * np.sin(parameter)
             xdot = -xLength * np.sin(parameter)
             ydot = yLength * np.cos(parameter)
