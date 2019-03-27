@@ -14,7 +14,7 @@ class Light:
 
     @id.setter
     def id(self, id: int) -> None:
-        self.__id = Light.numberOfLights
+        self.__id = id
         Light.numberOfLights += 1
 
     @property
