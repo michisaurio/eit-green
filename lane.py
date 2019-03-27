@@ -62,7 +62,7 @@ class Lane:
                     currentCar.lane.curveType == "ellipsis" and currentCar.parameter > np.pi / 2):
                 currentCar.parameter = 0
                 if currentCar.nextLane:
-                    currentCar.nextLane.cars.append((currentCar, 0))
+                    currentCar.nextLane.cars.append([currentCar, 0])
                     if currentCar.nextLane.isMerge:
                         currentCar.nextLane.updateTopologicalSorting()  # should remove the car from its own lane and put it in merge
                     currentCar.lane = currentCar.nextLane
@@ -246,12 +246,12 @@ def curve(lane, parameter):
                 y = lane.coordinates[1]
             orientation = np.arctan2(yLength, xLength)
         elif lane.curveType == "ellipsis":
-            x = xLength * np.cos(parameter)
-            y = yLength * np.sin(parameter)
+            x = lane.coordinates[0] + xLength * np.cos(np.pi-parameter)
+            y = lane.coordinates[1] + yLength * np.sin(parameter)
             xdot = -xLength * np.sin(parameter)
             ydot = yLength * np.cos(parameter)
             vs = np.sqrt(xdot ** 2 + ydot ** 2)
-            orientation = np.arctan2(ydot,xdot)
+            orientation = np.arctan2(-ydot,xdot)
         if not 'orientation' in locals():
             raise ValueError("No orientation was set")
         return x, y, vs, orientation
