@@ -6,8 +6,8 @@ from light import Light
 import color
 
 def main():
-    lane1 = Lane(coordinates=[200,100,400,200], speedLimit=20, curveType="ellipsis")
-    lane1 = Lane(coordinates=[100, 60, 200, 60], speedLimit=20)
+    lane1 = Lane(coordinates=[200,100,400,200], speedLimit=20, curveType="line")
+    #lane1 = Lane(coordinates=[100, 60, 200, 60], speedLimit=20)
     car1 = Car([20, 60])
     car1.lane = lane1
     lane1.cars = [[car1, 20]]
