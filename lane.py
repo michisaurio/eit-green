@@ -20,9 +20,9 @@ class Lane:
         yLength = coordinates[3] - coordinates[1]
         if(curveType == "line" or curveType == "merge"):
             if(xLength == 0):
-                self.length = yLength
+                self.length = abs(yLength)
             else:
-                self.length = xLength
+                self.length = abs(xLength)
         elif (curveType == "ellipsis"):
             h = (xLength - yLength) ** 2 / (
                     xLength + yLength) ** 2  # mathematical parameter only used to simplify expression below
