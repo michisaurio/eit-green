@@ -6,7 +6,7 @@ import numpy as np
 
 class Lane:
     def __init__(self, coordinates, speedLimit, light: Light = None, passDetector: InductionLoopPassing = None, presenceDetector: InductionLoopPresence = None, curveType="line", spawnRate=0.0, queue=0,
-                 isMerge=False, width = 3.5) -> None:
+                 isMerge=False, width = 3.5, isClockWise=0) -> None:
         self.coordinates = coordinates  # Start and end coordinates in a list [x.start, y.start, x.end, y.end]. For mergelanes, these are the coordinates of the straight lane.
         self.cars = []  # List with list of cars in the lane and their critical distance [car, criticalDistance]. Assumed topologically sorted such that the first element is the frontmost car in the lane.
         self.speedLimit = speedLimit
@@ -17,6 +17,7 @@ class Lane:
         self.__queue = queue #Let the constructor overload the setter method to make sure that the queue exists
         self.isMerge = isMerge
         self.width = width
+        self.isClockWise = isClockWise
         xLength = coordinates[2] - coordinates[0]
         yLength = coordinates[3] - coordinates[1]
         if(curveType == "line" or curveType == "merge"):
@@ -246,12 +247,30 @@ def curve(lane, parameter):
                 y = lane.coordinates[1]
             orientation = np.arctan2(yLength, xLength)
         elif lane.curveType == "ellipsis":
-            x = lane.coordinates[0] + xLength * np.cos(np.pi-parameter)
-            y = lane.coordinates[1] + yLength * np.sin(parameter)
+            if xLength > 0 and yLength > 0:
+                startAngle = (np.pi/2) * (3 - lane.isClockWise)
+            elif xLength > 0 and yLength < 0:
+                startAngle = (np.pi / 2) * (2 - lane.isClockWise)
+            elif xLength < 0 and yLength > 0:
+                startAngle = (np.pi / 2) * (0 - lane.isClockWise)
+            else:
+                startAngle = (np.pi / 2) * (1 - lane.isClockWise)
+
+            if lane.isClockWise == 0:
+                x = lane.coordinates[0] + xLength * (np.cos(parameter+startAngle)-np.cos(startAngle))
+                y = lane.coordinates[1] + yLength * (np.sin(parameter+startAngle)-np.sin(startAngle))
+            else:
+                x = lane.coordinates[0] + xLength * (np.cos(-parameter + startAngle) - np.cos(startAngle))
+                y = lane.coordinates[1] + yLength * (np.sin(-parameter + startAngle) - np.sin(startAngle))
             xdot = -xLength * np.sin(parameter)
             ydot = yLength * np.cos(parameter)
             vs = np.sqrt(xdot ** 2 + ydot ** 2)
-            orientation = np.arctan2(-ydot,xdot)
+            #orientation = np.arctan2(ydot,-xdot)
+            if lane.isClockWise == 0:
+                orientation = -(parameter+startAngle+np.pi/2)
+            else:
+                orientation = parameter+startAngle+np.pi/2
+
         if not 'orientation' in locals():
             raise ValueError("No orientation was set")
         return x, y, vs, orientation
