@@ -18,8 +18,8 @@ class Lane:
         self.width = width
         self.isClockWise = isClockWise
         self.nextLanes = nextLanes
-        xLength = coordinates[2] - coordinates[0]
-        yLength = coordinates[3] - coordinates[1]
+        xLength = abs(coordinates[2] - coordinates[0])
+        yLength = abs(coordinates[3] - coordinates[1])
         if(curveType == "line" or curveType == "merge"):
             if(xLength == 0):
                 self.length = abs(yLength)
