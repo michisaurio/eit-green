@@ -5,7 +5,7 @@ import numpy as np
 
 class Lane:
     def __init__(self, coordinates, speedLimit, light: Light = None, curveType="line", spawnRate=0.0, queue=0,
-                 isMerge=False, width = 3.5) -> None:
+                 isMerge=False, width = 3.5, nextLanes = None) -> None:
         self.coordinates = coordinates  # Start and end coordinates in a list [x.start, y.start, x.end, y.end]. For mergelanes, these are the coordinates of the straight lane.
         self.cars = []  # List with list of cars in the lane and their critical distance [car, criticalDistance]. Assumed topologically sorted such that the first element is the frontmost car in the lane.
         self.speedLimit = speedLimit
@@ -16,6 +16,7 @@ class Lane:
         self.__queue = queue #Let the constructor overload the setter method to make sure that the queue exists
         self.isMerge = isMerge
         self.width = width
+        self.nextLanes = nextLanes
         xLength = coordinates[2] - coordinates[0]
         yLength = coordinates[3] - coordinates[1]
         if(curveType == "line" or curveType == "merge"):
@@ -34,7 +35,9 @@ class Lane:
         # Car objects spawned according to a Poisson process (with predetermined mean val?)
         if (self.spawnRate * timeStep > np.random.uniform(0, 1)):
             self.queue += 1
-        if self.queue > 0 and self.cars[-1][0].parameter > 12:  # TODO : The parameter here defines how far the first car has come
+            print(self.queue)
+            print(len(self.cars))
+        if self.queue > 0 and (len(self.cars)== 0 or self.cars[-1][0].parameter > 12):  # TODO : The parameter here defines how far the first car has come
             self.spawn()
 
         i = 0
@@ -49,7 +52,7 @@ class Lane:
                 acceleration = currentCar.distanceConstant * criticalDistance - currentCar.speedConstant * currentCar.speed
 
             speed = currentCar.speed + timeStep * acceleration
-            currentCar.speed = max(0, min(speed, self.speedLimit))  # Add random number to speedLimit
+            currentCar.speed = max(0, speed)  # Add random number to speedLimit
             [x, y, vs, orientation] = curve(currentCar.lane, currentCar.parameter)
             currentCar.parameter = currentCar.parameter + timeStep * currentCar.speed / vs
             [x, y, vs, orientation] = curve(currentCar.lane, currentCar.parameter)
@@ -91,7 +94,7 @@ class Lane:
     def updateCriticalDistance(self):
         if len(self.cars) == 0:
             return
-        if self.light.color == Color.RED:
+        if self.light and self.light.color == Color.RED:
             self.cars[0][1] = self.length - self.cars[0][0].parameter
         elif self.cars[0][0].nextLane == None or len(self.cars[0][0].nextLane.cars) == 0:
             self.cars[0][1] = np.inf
@@ -122,11 +125,19 @@ class Lane:
 
 
     def spawn(self):
-        self.cars.append([Car([self.coordinates[0], self.coordinates[1]], lane=self), 0])
+        self.cars.append([Car([self.coordinates[0], self.coordinates[1]], lane=self, nextLane=self.selectNextLane()), 0])
+        self.queue -= 1
 
 
     def desiredSpeed(self):
         pass
+
+    def selectNextLane(self):
+        if self.nextLanes:
+            rndNum = np.random.uniform(0,1)
+            for lane in self.nextLanes:
+                if lane[1] > rndNum:
+                    return lane[0]
 
     @property
     def coordinates(self):
@@ -221,6 +232,14 @@ class Lane:
     def width(self, width):
         self.__width = width
 
+    @property
+    def nextLanes(self):
+        return self.__nextLanes
+
+    @nextLanes.setter
+    def nextLanes(self, nextLanes):
+        self.__nextLanes = nextLanes
+
 def project(mergeLane, car):
     velocityProportionalityConstant = mergeLane.speedLimit / car.lane.speedLimit  # Not the best approximation
     carPosition = mergeLane.length - car.parameter * 2 / (
@@ -239,11 +258,15 @@ def curve(lane, parameter):
                 y = lane.coordinates[1] + np.sign(yLength) * parameter
                 vs = 1
                 x = lane.coordinates[0]
+                if yLength < 0:
+                    orientation = np.pi/2
+                else:
+                    orientation = 3*np.pi/2
             else:
                 x = lane.coordinates[0] + np.sign(xLength) * parameter
                 vs = 1
                 y = lane.coordinates[1]
-            orientation = np.arctan2(yLength, xLength)
+                orientation = np.arctan2(yLength, xLength)
         elif lane.curveType == "ellipsis":
             x = lane.coordinates[0] + xLength * np.cos(parameter)
             y = lane.coordinates[1] + yLength * np.sin(parameter)

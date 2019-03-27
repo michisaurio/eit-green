@@ -6,18 +6,20 @@ from light import Light
 import color
 
 def main():
-    lane1 = Lane(coordinates=[0,100,20,100], speedLimit=20, curveType="line")
-    lane2 = Lane(coordinates = [20,100,100,200], speedLimit = 20, curveType="ellipsis")
-    #lane1 = Lane(coordinates=[100, 60, 200, 60], speedLimit=20)
-    car1 = Car([20, 60])
+    lane1 = Lane(coordinates=[0,400,350,400], speedLimit=60, curveType="line", spawnRate=0.1)
+    lane2 = Lane(coordinates = [400,450,400,800], speedLimit = 60, curveType="line")
+    lane3 = Lane(coordinates=[450, 400, 800, 400], speedLimit=60, curveType="line")
+    lane4 = Lane(coordinates=[400, 350, 400, 0], speedLimit=60, curveType="line")
+    car1 = Car([350, 400])
     car1.lane = lane1
-    car1.nextLane = lane2
-    lane1.cars = [[car1, 20]]
+    car1.nextLane = lane3
+    lane1.cars = []
     light = Light()
     lane1.light = light
     lane2.light = light
+    lane1.nextLanes = [(lane2, 0.2), (lane3, 0.6), (lane4, 1)]
     light.color = color.Color.GREEN
-    road1 = Road(lanes=[lane1,lane2])
+    road1 = Road(lanes=[lane1,lane2, lane3, lane4])
     print(car1.position)
     tm = TrafficMaster()
     tm.roads = [road1]
