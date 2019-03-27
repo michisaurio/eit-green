@@ -42,7 +42,7 @@ class TrafficMaster:
                     sprite.update(rotation=math.degrees(car[0].orientation))
                     self.car_sprites.append(sprite)
 
-                    print(car[0].position)
+                    print(car[0].position, car[0].parameter)
                     print(car[0].speed)
 
     #TODO: Be able to draw car and also rotate it. Should probably be a .png file? Make a function that does this. Input lane+car. Should get the rotation
