@@ -10,7 +10,7 @@ class Sensor:
         self.endParameter = endParameter
         self.lane = lane
 
-    def getSensorSignal(self):
+    def getSensorSignal(self) -> bool:
         return self.lane.getSensorSignal(self.startParameter, self.endParameter)
 
     @property
