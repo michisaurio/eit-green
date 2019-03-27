@@ -1,11 +1,10 @@
 from light import Light
 from color import Color
 from car import Car
-from sensor import InductionLoopPassing, InductionLoopPresence, InductionLoopCounter
 import numpy as np
 
 class Lane:
-    def __init__(self, coordinates, speedLimit, light: Light = None, passDetector: InductionLoopPassing = None, presenceDetector: InductionLoopPresence = None, curveType="line", spawnRate=0.0, queue=0,
+    def __init__(self, coordinates, speedLimit, light: Light = None, curveType="line", spawnRate=0.0, queue=0,
                  isMerge=False, width = 3.5) -> None:
         self.coordinates = coordinates  # Start and end coordinates in a list [x.start, y.start, x.end, y.end]. For mergelanes, these are the coordinates of the straight lane.
         self.cars = []  # List with list of cars in the lane and their critical distance [car, criticalDistance]. Assumed topologically sorted such that the first element is the frontmost car in the lane.
