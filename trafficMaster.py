@@ -3,7 +3,7 @@ import math
 import pyglet
 from pyglet.gl import *
 
-window = pyglet.window.Window(width=400, height=400)
+window = pyglet.window.Window(width=800, height=800)
 car_image = pyglet.resource.image("images/car_black.png")
 global_car_batch = pyglet.graphics.Batch()
 global_lane_batch = pyglet.graphics.Batch()
@@ -41,7 +41,9 @@ class TrafficMaster:
                     sprite = pyglet.sprite.Sprite(car_image, *car[0].position, batch=global_car_batch)
                     sprite.update(rotation=math.degrees(car[0].orientation))
                     self.car_sprites.append(sprite)
+
                     print(car[0].position, car[0].parameter)
+                    print(car[0].speed)
 
     #TODO: Be able to draw car and also rotate it. Should probably be a .png file? Make a function that does this. Input lane+car. Should get the rotation
     # for car: drawCar(car.position, rotation(car.position(?), lane))
