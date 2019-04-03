@@ -5,7 +5,7 @@ import numpy as np
 
 class Lane:
     def __init__(self, coordinates, speedLimit, light: Light = None, curveType="line", spawnRate=0.0, queue=0,
-                 isMerge=False, width = 3.5, nextLanes = None, isClockWise: int = 0) -> None:
+                 isMerge=False, width = 3.5, nextLanes = None, isClockWise: int = 0, parentLane = None) -> None:
         self.coordinates = coordinates  # Start and end coordinates in a list [x.start, y.start, x.end, y.end]. For mergelanes, these are the coordinates of the straight lane.
         self.cars = []  # List with list of cars in the lane and their critical distance [car, criticalDistance]. Assumed topologically sorted such that the first element is the frontmost car in the lane.
         self.speedLimit = speedLimit
@@ -18,6 +18,7 @@ class Lane:
         self.width = width
         self.isClockWise = isClockWise
         self.nextLanes = nextLanes
+        self.parentLane = parentLane
         xLength = abs(coordinates[2] - coordinates[0])
         yLength = abs(coordinates[3] - coordinates[1])
         if(curveType == "line" or curveType == "merge"):
@@ -28,7 +29,7 @@ class Lane:
         elif (curveType == "ellipsis"):
             h = (xLength - yLength) ** 2 / (
                     xLength + yLength) ** 2  # mathematical parameter only used to simplify expression below
-            self.length = 0.4 * np.pi * (xLength + yLength) * (1 + (3 * h) / (10 + np.sqrt(
+            self.length = 0.25 * np.pi * (xLength + yLength) * (1 + (3 * h) / (10 + np.sqrt(
                 4 - 3 * h)))  # formula is 1/4 times an approximation of the perimeter of an ellipse, see https://www.mathsisfun.com/geometry/ellipse-perimeter.html
 
     def updatePositions(self, timeStep) -> None: #TODO: take mergelane updating of position into consideration
@@ -63,9 +64,13 @@ class Lane:
                     currentCar.lane.curveType == "ellipsis" and currentCar.parameter > np.pi / 2):
                 currentCar.parameter = 0
                 if currentCar.nextLane:
-                    currentCar.nextLane.cars.append([currentCar, 0])
-                    if currentCar.nextLane.isMerge:
-                        currentCar.nextLane.updateTopologicalSorting()  # should remove the car from its own lane and put it in merge
+                    if currentCar.nextLane.parentLane:
+                        currentCar.nextLane.parentLane.cars.append([currentCar, 0])
+                        currentCar.nextLane.parentLane.updateTopologicalSort()
+                    else:
+                        currentCar.nextLane.cars.append([currentCar, 0])
+                    #if currentCar.nextLane.isMerge: #this is already done in previous if
+                    #      # should remove the car from its own lane and put it in merge
                     currentCar.lane = currentCar.nextLane
                     currentCar.nextLane = currentCar.lane.selectNextLane()  # TODO: give the car a proper nextLane
                 self.cars.pop(0)
@@ -86,29 +91,52 @@ class Lane:
             sortingParameter = self.length - currentCar.parameter
             if currentCar.lane == "ellipsis":
                 sortingParameter = project(self, currentCar)
-            sortedCars.append((currentCar, sortingParameter))
+            sortedCars.append([currentCar, sortingParameter])
         sortedCars.sort(key=lambda tup: tup[1])
+        for i in range(len(sortedCars)):
+            print("parameter:", sortedCars[i][1])
         self.cars = sortedCars
+        self.updateCriticalDistance()
 
     def updateCriticalDistance(self):
         if len(self.cars) == 0:
             return
         if self.light and self.light.color == Color.RED:
             self.cars[0][1] = self.length - self.cars[0][0].parameter
-        elif self.cars[0][0].nextLane == None or len(self.cars[0][0].nextLane.cars) == 0:
+        elif self.cars[0][0].nextLane == None:
             self.cars[0][1] = np.inf
+        elif self.cars[0][0].nextLane.parentLane == None:
+            if len(self.cars[0][0].nextLane.cars) == 0:
+                self.cars[0][1] = np.inf
+            else:
+                currentCar = self.cars[0][0]
+                currentLaneCriticalDistance = self.length - self.cars[0][0].parameter
+                if currentCar.lane.curveType == "ellipsis":
+                    currentLaneCriticalDistance = project(self, currentCar)
+                #if currentLaneCriticalDistance > 2*currentCar.speed*currentCar.comfortabilityConstant:
+                #    self.cars[0][1] = currentLaneCriticalDistance
+                nextCar = currentCar.nextLane.cars[-1][0] #TODO: fix if there is no nextlane
+                nextLaneCriticalDistance = nextCar.parameter# - currentCar.comfortabilityConstant * currentCar.speed  # how far the next car has travelled from the start of the next lane
+                if currentCar.nextLane.curveType == "ellipsis":
+                    nextLaneCriticalDistance = currentCar.nextLane.length * nextCar.parameter * 2 / (np.pi)  # length of the next car from starting point = length of lane * current angle of car / ending angle of lane
+                self.cars[0][1] = (currentLaneCriticalDistance + nextLaneCriticalDistance) - currentCar.comfortabilityConstant*currentCar.length
         else:
             currentCar = self.cars[0][0]
-            currentLaneCriticalDistance = self.length - self.cars[0][0].parameter
-            if currentCar.lane.curveType == "ellipsis":
-                currentLaneCriticalDistance = project(self, currentCar)
-            #if currentLaneCriticalDistance > 2*currentCar.speed*currentCar.comfortabilityConstant:
-            #    self.cars[0][1] = currentLaneCriticalDistance
-            nextCar = currentCar.nextLane.cars[-1][0]
-            nextLaneCriticalDistance = nextCar.parameter - currentCar.comfortabilityConstant * currentCar.speed  # how far the next car has travelled from the start of the next lane
-            if currentCar.nextLane.curveType == "ellipsis":
-                nextLaneCriticalDistance = currentCar.nextLane.length * nextCar.parameter * 2 / (np.pi)  # length of the next car from starting point = length of lane * current angle of car / ending angle of lane
-            self.cars[0][1] = (currentLaneCriticalDistance + nextLaneCriticalDistance)
+            nextLane = currentCar.nextLane.parentLane
+            if len(nextLane.cars) == 0:
+                self.cars[0][1] = np.inf
+            else:
+                currentLaneCriticalDistance = self.length - self.cars[0][0].parameter
+                if currentCar.lane.curveType == "ellipsis":
+                    currentLaneCriticalDistance = project(self, currentCar)
+                # if currentLaneCriticalDistance > 2*currentCar.speed*currentCar.comfortabilityConstant:
+                #    self.cars[0][1] = currentLaneCriticalDistance
+                nextCar = nextLane.cars[-1][0]  # TODO: fix if there is no nextlane
+                nextLaneCriticalDistance = nextCar.parameter  # - currentCar.comfortabilityConstant * currentCar.speed  # how far the next car has travelled from the start of the next lane
+                if currentCar.nextLane.curveType == "ellipsis":
+                    nextLaneCriticalDistance = nextLane.length * nextCar.parameter * 2 / (
+                        np.pi)  # length of the next car from starting point = length of lane * current angle of car / ending angle of lane
+                self.cars[0][1] = (currentLaneCriticalDistance + nextLaneCriticalDistance) #- currentCar.comfortabilityConstant * currentCar.length
 
         nextCar = self.cars[0][0]
         nextParameter = nextCar.parameter
@@ -119,7 +147,7 @@ class Lane:
             currentParameter = currentCar.parameter
             if currentCar.lane.curveType == "ellipsis":
                 currentParameter = currentCar.lane.length * currentCar.parameter * 2 / (np.pi)
-            self.cars[i][1] = nextParameter - currentParameter - currentCar.comfortabilityConstant * currentCar.speed
+            self.cars[i][1] = nextParameter - currentParameter - currentCar.comfortabilityConstant*(self.cars[i-1][0].length+currentCar.length)/2 #- currentCar.comfortabilityConstant * currentCar.speed
             nextParameter = currentParameter
 
 
@@ -186,7 +214,7 @@ class Lane:
     def curveType(self, curveType: str):
         if not isinstance(curveType, str):
             raise TypeError("Expected str")
-        if not curveType in {"line", "ellipsis"}:
+        if not curveType in {"line", "ellipsis", "merge"}:
             raise ValueError("Type of curve does not exist")
         self.__curveType = curveType
 
@@ -241,10 +269,10 @@ class Lane:
         self.__nextLanes = nextLanes
 
 def project(mergeLane, car):
-    velocityProportionalityConstant = mergeLane.speedLimit / car.lane.speedLimit  # Not the best approximation
-    carPosition = mergeLane.length - car.parameter * 2 / (
-        np.pi) * car.lane.length * velocityProportionalityConstant  # The length of car.lane is an approximation, and we approximate the distance
-    return carPosition  # travelled by the car as the percentage of the total angle(angle goes between 0 and pi/2 travelled multiplied with the length
+    #velocityProportionalityConstant = mergeLane.speedLimit / car.lane.speedLimit  # Not the best approximation
+    carDistanceFromEnd = car.lane.length - car.parameter * 2 / (
+        np.pi) * car.lane.length # The length of car.lane is an approximation, and we approximate the distance
+    return carDistanceFromEnd  # travelled by the car as the percentage of the total angle(angle goes between 0 and pi/2 travelled multiplied with the length
 
 def curve(lane, parameter):
         # Parametric equation function. Takes in parameter s and returns x and y coordinates and derivative of s.
