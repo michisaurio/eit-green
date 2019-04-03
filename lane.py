@@ -123,7 +123,7 @@ class Lane:
             currentParameter = currentCar.parameter
             if currentCar.lane.curveType == "ellipsis":
                 currentParameter = currentCar.lane.length * currentCar.parameter * 2 / (np.pi)
-            self.cars[i][1] = nextParameter - currentParameter - currentCar.comfortabilityConstant * currentCar.speed
+            self.cars[i][1] = nextParameter - currentParameter - currentCar.comfortabilityConstant * currentCar.speed - currentCar.comfortabilityConstant*(self.cars[i-1][0].length+currentCar.length)/2
             nextParameter = currentParameter
 
 

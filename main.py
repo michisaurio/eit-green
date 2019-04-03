@@ -33,7 +33,7 @@ def main():
     light = Light()
     lane1.light = light
     lane2.light = light
-    light.color = color.Color.GREEN
+    light.color = color.Color.RED
     road1 = Road(lanes=[lane1,lane2, lane3, lane4, lane5, lane6, lane7, lane8, lane11, lane12, lane13, lane31, lane32, lane33, lane51, lane52, lane53, lane71, lane72, lane73])
     tm = TrafficMaster()
     tm.roads = [road1]
