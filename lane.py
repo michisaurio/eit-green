@@ -45,10 +45,6 @@ class Lane:
                 break
             # TODO: This is where the car should drive and check for collision etc
             (currentCar, criticalDistance) = self.cars[i]
-            if currentCar.id == 3:
-                print("id: ", currentCar.id, "crit dist: ", criticalDistance, "Curve type: ", currentCar.lane.curveType)
-            if currentCar.id == 2:
-                print("id: ", currentCar.id, "crit dist: ", criticalDistance, "Curve type: ", currentCar.lane.curveType)
             if criticalDistance > 2 * currentCar.speed * currentCar.comfortabilityConstant: #TODO: Tune this threshold
                 acceleration = currentCar.accelerationConstant*(self.speedLimit - currentCar.speed)
             else:
@@ -282,11 +278,11 @@ def curve(lane, parameter):
                 startAngle = (np.pi / 2) * (1 - lane.isClockWise)
 
             if lane.isClockWise == 0:
-                x = lane.coordinates[0] + xLength * (np.cos(parameter+startAngle)-np.cos(startAngle))
-                y = lane.coordinates[1] + yLength * (np.sin(parameter+startAngle)-np.sin(startAngle))
+                x = lane.coordinates[0] + abs(xLength) * (np.cos(parameter+startAngle)-np.cos(startAngle))
+                y = lane.coordinates[1] + abs(yLength) * (np.sin(parameter+startAngle)-np.sin(startAngle))
             else:
-                x = lane.coordinates[0] + xLength * (np.cos(-parameter + startAngle) - np.cos(startAngle))
-                y = lane.coordinates[1] + yLength * (np.sin(-parameter + startAngle) - np.sin(startAngle))
+                x = lane.coordinates[0] + abs(xLength) * (np.cos(-parameter + startAngle) - np.cos(startAngle))
+                y = lane.coordinates[1] + abs(yLength) * (np.sin(-parameter + startAngle) - np.sin(startAngle))
             xdot = -xLength * np.sin(parameter)
             ydot = yLength * np.cos(parameter)
             vs = np.sqrt(xdot ** 2 + ydot ** 2)
@@ -294,7 +290,7 @@ def curve(lane, parameter):
             if lane.isClockWise == 0:
                 orientation = -(parameter+startAngle+np.pi/2)
             else:
-                orientation = parameter+startAngle+np.pi/2
+                orientation = parameter-startAngle+np.pi/2
 
         if not 'orientation' in locals():
             raise ValueError("No orientation was set")
