@@ -5,7 +5,7 @@ import numpy as np
 
 class Lane:
     def __init__(self, coordinates, speedLimit, light: Light = None, curveType="line", spawnRate=0.0, queue=0,
-                 isMerge=False, width = 3.5, nextLanes = None, isClockWise: int = 0) -> None:
+                 isMerge=False, width = 3.5, nextLanes = None, isClockWise: int = 0, parentLane = None) -> None:
         self.coordinates = coordinates  # Start and end coordinates in a list [x.start, y.start, x.end, y.end]. For mergelanes, these are the coordinates of the straight lane.
         self.cars = []  # List with list of cars in the lane and their critical distance [car, criticalDistance]. Assumed topologically sorted such that the first element is the frontmost car in the lane.
         self.speedLimit = speedLimit
@@ -18,6 +18,7 @@ class Lane:
         self.width = width
         self.isClockWise = isClockWise
         self.nextLanes = nextLanes
+        self.parentLane = parentLane
         xLength = abs(coordinates[2] - coordinates[0])
         yLength = abs(coordinates[3] - coordinates[1])
         if(curveType == "line" or curveType == "merge"):
@@ -67,9 +68,13 @@ class Lane:
                     currentCar.lane.curveType == "ellipsis" and currentCar.parameter > np.pi / 2):
                 currentCar.parameter = 0
                 if currentCar.nextLane:
-                    currentCar.nextLane.cars.append([currentCar, 0])
-                    if currentCar.nextLane.isMerge:
-                        currentCar.nextLane.updateTopologicalSorting()  # should remove the car from its own lane and put it in merge
+                    if currentCar.nextLane.parentLane:
+                        currentCar.nextLane.parentLane.cars.append([currentCar, 0])
+                        currentCar.nextLane.parentLane.updateTopologicalSorting()
+                    else:
+                        currentCar.nextLane.cars.append([currentCar, 0])
+                    #if currentCar.nextLane.isMerge: #this is already done in previous if
+                    #      # should remove the car from its own lane and put it in merge
                     currentCar.lane = currentCar.nextLane
                     currentCar.nextLane = currentCar.lane.selectNextLane()  # TODO: give the car a proper nextLane
                 self.cars.pop(0)
