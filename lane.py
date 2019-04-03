@@ -136,7 +136,7 @@ class Lane:
                 if currentCar.nextLane.curveType == "ellipsis":
                     nextLaneCriticalDistance = nextLane.length * nextCar.parameter * 2 / (
                         np.pi)  # length of the next car from starting point = length of lane * current angle of car / ending angle of lane
-                self.cars[0][1] = (currentLaneCriticalDistance + nextLaneCriticalDistance) #- currentCar.comfortabilityConstant * currentCar.length
+                self.cars[0][1] = (currentLaneCriticalDistance + nextLaneCriticalDistance) - currentCar.comfortabilityConstant * currentCar.length
 
         nextCar = self.cars[0][0]
         nextParameter = nextCar.parameter
@@ -147,7 +147,7 @@ class Lane:
             currentParameter = currentCar.parameter
             if currentCar.lane.curveType == "ellipsis":
                 currentParameter = currentCar.lane.length * currentCar.parameter * 2 / (np.pi)
-            self.cars[i][1] = nextParameter - currentParameter - currentCar.comfortabilityConstant*(self.cars[i-1][0].length+currentCar.length)/2 #- currentCar.comfortabilityConstant * currentCar.speed
+            self.cars[i][1] = nextParameter - currentParameter - currentCar.comfortabilityConstant*(self.cars[i-1][0].length+currentCar.length)/2 - currentCar.comfortabilityConstant * currentCar.speed
             nextParameter = currentParameter
 
 
