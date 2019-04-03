@@ -3,9 +3,9 @@ import intersectionConfigs as inCon
 from color import Color
 
 class Configuration:
-    def __init__(self, lights: [Light] = None) -> None:
+    def __init__(self, initList, lights: [Light] = None) -> None:
         self.lights = lights
-        self.stateList = inCon.main()
+        self.stateList = inCon.main(mergeList=initList)
         self.curUpdatingYellowToRed = False
         self.curUpdatingRedToGreen = False
         self.curConfig = 0
