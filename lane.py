@@ -108,11 +108,13 @@ class Lane:
                 currentLaneCriticalDistance = project(self, currentCar)
             #if currentLaneCriticalDistance > 2*currentCar.speed*currentCar.comfortabilityConstant:
             #    self.cars[0][1] = currentLaneCriticalDistance
-            nextCar = currentCar.nextLane.cars[-1][0]
-            nextLaneCriticalDistance = nextCar.parameter - currentCar.comfortabilityConstant * currentCar.speed  # how far the next car has travelled from the start of the next lane
+            nextCar = currentCar.nextLane.cars[-1][0] #TODO: fix if there is no nextlane
+            nextLaneCriticalDistance = nextCar.parameter# - currentCar.comfortabilityConstant * currentCar.speed  # how far the next car has travelled from the start of the next lane
             if currentCar.nextLane.curveType == "ellipsis":
                 nextLaneCriticalDistance = currentCar.nextLane.length * nextCar.parameter * 2 / (np.pi)  # length of the next car from starting point = length of lane * current angle of car / ending angle of lane
-            self.cars[0][1] = (currentLaneCriticalDistance + nextLaneCriticalDistance)
+            self.cars[0][1] = (currentLaneCriticalDistance + nextLaneCriticalDistance) - currentCar.comfortabilityConstant*currentCar.length
+            #if self.cars[0][1] > 150:
+            #    self.cars[0][1] = np.inf
 
         nextCar = self.cars[0][0]
         nextParameter = nextCar.parameter
@@ -123,7 +125,7 @@ class Lane:
             currentParameter = currentCar.parameter
             if currentCar.lane.curveType == "ellipsis":
                 currentParameter = currentCar.lane.length * currentCar.parameter * 2 / (np.pi)
-            self.cars[i][1] = nextParameter - currentParameter - currentCar.comfortabilityConstant * currentCar.speed - currentCar.comfortabilityConstant*(self.cars[i-1][0].length+currentCar.length)/2
+            self.cars[i][1] = nextParameter - currentParameter- currentCar.comfortabilityConstant*(self.cars[i-1][0].length+currentCar.length)/2 #- currentCar.comfortabilityConstant * currentCar.speed
             nextParameter = currentParameter
 
 

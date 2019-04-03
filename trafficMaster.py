@@ -62,7 +62,7 @@ def on_draw() -> None:
     #light_batch.draw()
     global_car_batch.draw()
     import time
-    time.sleep(0.1)
+    #time.sleep(0.1)
 
 def runPyglet(trafficM, timeStep):
     trafficM.setLaneSprites()
