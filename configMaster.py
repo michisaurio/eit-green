@@ -1,4 +1,5 @@
 from configuration import Configuration
+import numpy as np
 
 class ConfigMaster:
     def __init__(self, configurations: [Configuration] = None) -> None:
@@ -6,7 +7,10 @@ class ConfigMaster:
 
     def update(self, timeStep: float) -> None:
         for configuration in self.configurations:
-            configuration.update(timeStep, newConfig=-1)
+            if np.random.uniform(0, 1) < 0.01:
+                configuration.update(timeStep, newConfig=np.random.randint(len(configuration.stateList)-1))
+            else:
+                configuration.update(timeStep, newConfig=-1)
 
     @property
     def configurations(self) -> [Configuration]:
