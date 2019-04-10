@@ -22,8 +22,15 @@ class Car:
         self.comfortabilityConstant = comfortabilityConstant #This number should be multiplied with the car speed to find the distance one tries to keep from the next car
         self.length = length
         self.width = width
-        self.image = randint(0,7)
+        self.image = self.getRanNum()
 
+
+    def getRanNum(self):
+        rnd = randint(0,8)
+        if rnd != 8:
+            return rnd
+        else:
+            return randint(0,8)
 
     @property
     def id(self) -> int:
