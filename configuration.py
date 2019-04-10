@@ -19,7 +19,6 @@ class Configuration:
     # counting variable. Every time step this counting variable adds the time step, and after a certain amount of time
     # has passed the lights change colour.
     def update(self, timeStep: float, newConfig=-1) -> None:  # TODO: Check if function calls are correct
-        print(self.curUpdatingYellowToRed, self.curUpdatingRedToGreen)
         if newConfig != -1 and not self.curUpdatingYellowToRed and not self.curUpdatingRedToGreen:
             self.curUpdatingYellowToRed = timeStep
             self.curConfig = self.stateList[newConfig]
