@@ -18,9 +18,9 @@ global_light_batch = pyglet.graphics.Batch()
 
 class TrafficMaster:
     #TODO : How is an initial environment set up? Json? I don't know
-    def __init__(self) -> None:
+    def __init__(self, configs) -> None:
         self.i = 1
-        self.configMaster = ConfigMaster() #TODO: How should the configMaster get its configurations?
+        self.configMaster = ConfigMaster(configs) #TODO: How should the configMaster get its configurations?
         self.lanes = []
         self.car_sprites = []
         self.lane_sprites = []
