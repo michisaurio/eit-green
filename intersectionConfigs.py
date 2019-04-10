@@ -67,15 +67,24 @@ def sublist(element, array):
 
 
 # Primary loop.
-def main(mergeList=[], allowedList=notAllowed, deleteList=[]):
+def main(mergeList=[], allowedList=notAllowed, deleteList=[], footGanger=False):
     merge(mergeList, allowedList)
     for i in deleteList:
         allowedList.remove(i)
     loop([], initList, -1, allowedList)
     noSublistList = []
+    if footGanger == False:
+        for i in range(len(allowed)):
+            removelist = []
+            for j in range(len(allowed[i])):
+                if allowed[i][j] % 4 == 3:
+                    removelist.append(allowed[i][j])
+            for j in removelist:
+                allowed[i].remove(j)
     for i in allowed:
         if not sublist(i, allowed):
             noSublistList.append(i)
+    print(noSublistList)
     return noSublistList
 
 
