@@ -8,7 +8,7 @@ from color import Color
 window = pyglet.window.Window(width=800, height=800)
 car_image = pyglet.resource.image("images/car_black.png")
 carImages = ["images/car_black.png", "images/car_blue.png", "images/car_green.png", "images/car_grey.png", "images/car_lime.png",
-          "images/car_olive.png", "images/car_red.png", "images/car_violet.png"]
+          "images/car_olive.png", "images/car_red.png", "images/car_violet.png", "images/ship.png"]
 lightImages = {Color.GREEN: "images/light_green.png", Color.RED: "images/light_red.png", Color.YELLOW: "images/light_yellow.png"}
 
 global_car_batch = pyglet.graphics.Batch()
@@ -33,10 +33,10 @@ class TrafficMaster:
     def update(self, timeStep: float) -> None:
         self.configMaster.update(timeStep)
         for lane in self.lanes:
-            lane.updatePositions(timeStep) #Should lane.update be made instead?
+            lane.updatePositions(timeStep)
         self.draw()
 
-    def setLaneSprites(self): #TODO : Add the lanes to the lane_batch
+    def setLaneSprites(self):
         laneImageWidth = pyglet.resource.image("images/road.png").width
         for lane in self.lanes:
             coordinates = lane.coordinates
