@@ -5,7 +5,7 @@ import numpy as np
 
 class Lane:
     def __init__(self, coordinates, speedLimit, light: Light = None, curveType="line", spawnRate=0.0, queue=0,
-                 isMerge=False, width = 3.5, nextLanes = None, isClockWise: int = 0, parentLane = None) -> None:
+                 isMerge = False, width = 35, crosswalk_width= 20, nextLanes = None, isClockWise: int = 0, parentLane = None) -> None:
         self.coordinates = coordinates  # Start and end coordinates in a list [x.start, y.start, x.end, y.end]. For mergelanes, these are the coordinates of the straight lane.
         self.cars = []  # List with list of cars in the lane and their critical distance [car, criticalDistance]. Assumed topologically sorted such that the first element is the frontmost car in the lane.
         self.speedLimit = speedLimit
@@ -16,6 +16,7 @@ class Lane:
         self.__queue = queue #Let the constructor overload the setter method to make sure that the queue exists
         self.isMerge = isMerge
         self.width = width
+        self.crosswalk_width = crosswalk_width
         self.isClockWise = isClockWise
         self.nextLanes = nextLanes
         self.parentLane = parentLane
@@ -101,8 +102,9 @@ class Lane:
     def updateCriticalDistance(self):
         if len(self.cars) == 0:
             return
-        if self.light and self.light.color == Color.RED:
-            self.cars[0][1] = self.length - self.cars[0][0].parameter
+        distance_to_crosswalk = self.length - self.cars[0][0].parameter - self.crosswalk_width
+        if self.light and (self.light.color == Color.RED or (self.light.color == Color.YELLOW and distance_to_crosswalk > 0)):
+            self.cars[0][1] = distance_to_crosswalk
         elif self.cars[0][0].nextLane == None:
             self.cars[0][1] = np.inf
         elif self.cars[0][0].nextLane.parentLane == None:
@@ -260,6 +262,13 @@ class Lane:
     def width(self, width):
         self.__width = width
 
+    @property
+    def crosswalk_width(self):
+        return self.__crosswalk_width
+
+    @crosswalk_width.setter
+    def crosswalk_width(self, crosswalk_width):
+        self.__crosswalk_width = crosswalk_width
     @property
     def nextLanes(self):
         return self.__nextLanes
