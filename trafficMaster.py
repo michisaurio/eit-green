@@ -38,9 +38,16 @@ class TrafficMaster:
 
     def setLaneSprites(self):
         laneImageWidth = pyglet.resource.image("images/road.png").width
+        global global_lane_batch
+
+        #################
+        #How to add a new image. Change the image and the coordinates properly
+        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/car.png"), 300, 300, batch = global_lane_batch)
+        self.lane_sprites.append(sprite)
+        #################
+
         for lane in self.lanes:
             coordinates = lane.coordinates
-            global global_lane_batch
             if coordinates[1] == coordinates[3] and lane.curveType == "line" and (lane.nextLanes == None or len(lane.nextLanes)>1):
                 if coordinates[0] < coordinates[2]:
                     small, big = coordinates[0], coordinates[2]
