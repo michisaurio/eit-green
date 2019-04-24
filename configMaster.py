@@ -8,7 +8,7 @@ class ConfigMaster:
     def update(self, timeStep: float) -> None:
         for configuration in self.configurations:
             if np.random.uniform(0, 1) < 0.01:
-                configuration.update(timeStep, newConfig=np.random.randint(len(configuration.stateList)-1))
+                configuration.update(timeStep, newConfig=np.random.randint(len(configuration.stateList)))
             else:
                 configuration.update(timeStep, newConfig=-1)
 
