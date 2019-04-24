@@ -7,6 +7,8 @@ from lane import Lane
 from color import Color
 
 window = pyglet.window.Window(width=1200, height=800)
+music = pyglet.resource.media("music/e6.wav")
+music.play()
 car_image = pyglet.resource.image("images/car_black.png")
 carImages = ["images/car_black.png", "images/car_blue.png", "images/car_green.png", "images/car_grey.png", "images/car_lime.png",
           "images/car_olive.png", "images/car_red.png", "images/car_violet.png", "images/ship.png"]
