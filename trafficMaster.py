@@ -66,7 +66,6 @@ class TrafficMaster:
 
         for lane in self.lanes:
             coordinates = lane.coordinates
-            global global_lane_batch
             if lane.curveType == 'ellipsis':
                 x0 = min(coordinates[0],coordinates[2])
                 x1 = max(coordinates[0], coordinates[2])
@@ -107,14 +106,14 @@ class TrafficMaster:
                                 y01 = y1 - crossWalkImageWith
                             if x01-x0 < crossWalkImageWith or x1-x01 <= crossWalkImageWith:
                                 sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/road_crosswalk.png"), x01+crossWalkImageWith,
-                                                              y01 - 1*lane.width/2 + 2*crossWalkImageWith, batch=global_lane_batch)
+                                                              y01 - 0*lane.width/2 + 1*crossWalkImageWith, batch=global_lane_batch)
                             else:
                                 sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/road.png"), x01+laneImageWidth,
-                                                              y01 - 1*lane.width/2 + 2*laneImageWidth, batch=global_lane_batch)
+                                                              y01 - 0*lane.width/2 + 1*laneImageWidth, batch=global_lane_batch)
                             sprite.update(rotation=180)
                             self.lane_sprites.append(sprite)
                             y01 += sprite.width
-                        y01 = y0 - laneImageWidth
+                        y01 = y0
                         y1 = coordinates[1] - lane.width / 2
                         while y01 > y1:
                             if y01 - crossWalkImageWith < y1:
