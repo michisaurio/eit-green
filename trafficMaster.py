@@ -7,6 +7,13 @@ from lane import Lane
 from color import Color
 
 window = pyglet.window.Window(width=1200, height=800)
+music = pyglet.media.load("music/e6.wav")
+looper = pyglet.media.SourceGroup(music.audio_format, None)
+looper.loop = True
+looper.queue(music)
+player = pyglet.media.Player()
+player.queue(looper)
+player.play()
 car_image = pyglet.resource.image("images/car_black.png")
 carImages = ["images/car_black.png", "images/car_blue.png", "images/car_green.png", "images/car_grey.png", "images/car_lime.png",
           "images/car_olive.png", "images/car_red.png", "images/car_violet.png", "images/ship.png"]
@@ -37,27 +44,37 @@ class TrafficMaster:
         self.draw()
 
     def setLaneSprites(self):
-        xlength  =  pyglet.resource.image("images/car_red.png").width
-        ylength =  pyglet.resource.image("images/car_red.png").height
-        (dx,dy)=positionCorrectionForPloting(0, 2*xlength, 2*ylength)
-        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/car_red.png"), 100+dx,100+dy, batch=global_lane_batch)
-        sprite.update(rotation=0)
-        sprite.update(scale=2)
+        # pokemon decoration
+        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/pokemon_center.png"), 720, 500,
+                                      batch=global_lane_batch)
         self.lane_sprites.append(sprite)
-        (dx,dy)=positionCorrectionForPloting(-45, 2*xlength, 2*ylength)
-        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/car_blue.png"), 100+dx,100+dy, batch=global_lane_batch)
-        sprite.update(rotation=-45)
-        sprite.update(scale=2)
+        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/snorlax.png"), 850, 100,
+                                      batch=global_lane_batch)
+        sprite.update(scale=0.05)
         self.lane_sprites.append(sprite)
-        (dx,dy)=positionCorrectionForPloting(-90, 2*xlength, 2*ylength)
-        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/car_green.png"), 100+dx,100+dy, batch=global_lane_batch)
-        sprite.update(rotation=-90)
-        sprite.update(scale=2)
+        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/snorlax.png"), 800, 150,
+                                      batch=global_lane_batch)
+        sprite.update(scale=0.05)
         self.lane_sprites.append(sprite)
-        (dx,dy)=positionCorrectionForPloting(-135, 2*xlength, 2*ylength)
-        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/car_violet.png"), 100+dx,100+dy, batch=global_lane_batch)
-        sprite.update(rotation=-135)
-        sprite.update(scale=2)
+        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/snorlax.png"), 920, 200,
+                                      batch=global_lane_batch)
+        sprite.update(scale=0.05)
+        self.lane_sprites.append(sprite)
+        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/snorlax.png"), 850, 500,
+                                      batch=global_lane_batch)
+        sprite.update(scale=0.05)
+        self.lane_sprites.append(sprite)
+        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/snorlax.png"), 75, 100,
+                                      batch=global_lane_batch)
+        sprite.update(scale=0.05)
+        self.lane_sprites.append(sprite)
+        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/snorlax.png"), 150, 200,
+                                      batch=global_lane_batch)
+        sprite.update(scale=0.05)
+        self.lane_sprites.append(sprite)
+        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/snorlax.png"), 250, 150,
+                                      batch=global_lane_batch)
+        sprite.update(scale=0.05)
         self.lane_sprites.append(sprite)
 
         laneImageWidth = pyglet.resource.image("images/road.png").width

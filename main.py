@@ -20,8 +20,7 @@ def main():
     lane6 = Lane(coordinates=[x_cross+lane_width,y_cross-lane_width/2,screen_width,y_cross-lane_width/2], speedLimit=120, curveType="line", width = lane_width)
     lane7 = Lane(coordinates=[x_cross+lane_width/2, 0, x_cross+lane_width/2, y_cross-lane_width], speedLimit=120, curveType="line", spawnRate=0.4, width = lane_width)
     lane8 = Lane(coordinates=[x_cross-lane_width/2, y_cross-lane_width, x_cross-lane_width/2, 0], speedLimit=120, curveType="line", width = lane_width)
-    lane9 = Lane(coordinates=[x_cross+lane_width*3/2, 0, x_cross+lane_width*3/2, y_cross-lane_width], speedLimit=120, curveType="line", spawnRate = 0.4, width = lane_width)
-    mergeLane4 = Lane(coordinates=[x_cross+lane_width/2, y_cross-lane_width/2, x_cross+lane_width/2, y_cross+lane_width], speedLimit=120, curveType="merge", nextLanes=[(lane4, 1)], width = lane_width, crosswalk_width= 0)
+    mergeLane4 = Lane(coordinates=[x_cross+lane_width/2, y_cross-lane_width, x_cross+lane_width/2, y_cross+lane_width], speedLimit=120, curveType="merge", nextLanes=[(lane4, 1)], width = lane_width, crosswalk_width= 0)
     lane14 = Lane(coordinates=[x_cross-lane_width, y_cross-lane_width/2, x_cross+lane_width/2, y_cross+lane_width], speedLimit=120, curveType="ellipsis", isClockWise=0, nextLanes=[(lane4, 1)], parentLane=mergeLane4, width = lane_width, crosswalk_width= 0)
     lane16 = Lane(coordinates=[x_cross-lane_width, y_cross-lane_width/2, x_cross+lane_width, y_cross-lane_width/2], speedLimit=120, curveType="line", nextLanes=[(lane6, 1)], width = lane_width, crosswalk_width= 0)
     lane18 = Lane(coordinates=[x_cross-lane_width, y_cross-lane_width/2, x_cross-lane_width/2, y_cross-lane_width], speedLimit=120, curveType="ellipsis", isClockWise=1, nextLanes=[(lane8, 1)], width = lane_width, crosswalk_width= 0)
@@ -60,17 +59,8 @@ def main():
     light_pedestrian4.color = color.Color.RED
     config = Configuration(initList=[[0, 1, 2], [4, 5, 6], [8, 9, 10], [12, 13, 14]], lights=[light1, light1, light1, light_pedestrian1, light3, light3, light3, light_pedestrian2, light5, light5, light5, light_pedestrian3, light7, light7, light7, light_pedestrian4])
     tm = TrafficMaster([config])
-    tm.lanes = [lane1,lane2, lane3, lane4, lane5, lane6, lane7, lane8, lane9, mergeLane4, lane14, lane16, lane18, lane36, lane38, lane31, lane58, lane52, lane54, lane72, lane74, lane76]
-    """
-    print(car1.speed)
-    tm.update(0.01)
-    print(car1.speed)
-    tm.update(0.01)
-    print(car1.speed)
-    tm.update(0.01)
-    print(car1.speed)
-    tm.update(0.01)
-    """
+    tm.lanes = [lane1,lane2, lane3, lane4, lane5, lane6, lane7, lane8, mergeLane4, lane14, lane16, lane18, lane36, lane38, lane31, lane58, lane52, lane54, lane72, lane74, lane76]
+
     tm.startSimulation(0.01)
 
 def main2():
@@ -183,4 +173,4 @@ def main2():
                 laneS3O1, laneV3S1, laneN3V1, laneO3N1]
     tm.startSimulation(0.01)
 if __name__ == "__main__":
-    main2()
+    main()

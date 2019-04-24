@@ -5,18 +5,21 @@ class ConfigMaster:
     def __init__(self, configurations: [Configuration] = None) -> None:
         self.configurations = configurations
         self.nextLight = 0
-        self.countDown = 6
+        self.countDown = 7
 
     def update(self, timeStep: float) -> None:
         for configuration in self.configurations:
+            print("hey")
             #if np.random.uniform(0, 1) < 0.01:
             if self.countDown < 0:
                 self.nextLight = (self.nextLight+1)%len(configuration.stateList)
-                configuration.update(timeStep, newConfig=self.nextLight)
-                self.countDown = 6
-            else:
-                configuration.update(timeStep, newConfig=-1)
-                self.countDown -= timeStep
+                configuration.update(newConfig=self.nextLight)
+                self.countDown = 7
+            elif self.countDown < 1:
+                configuration.allRed()
+            elif self.countDown < 2:
+                configuration.prepare()
+            self.countDown-= timeStep
 
     @property
     def configurations(self) -> [Configuration]:
