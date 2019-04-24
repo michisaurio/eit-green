@@ -20,7 +20,7 @@ def main():
     lane6 = Lane(coordinates=[x_cross+lane_width,y_cross-lane_width/2,screen_width,y_cross-lane_width/2], speedLimit=120, curveType="line", width = lane_width)
     lane7 = Lane(coordinates=[x_cross+lane_width/2, 0, x_cross+lane_width/2, y_cross-lane_width], speedLimit=120, curveType="line", spawnRate=0.4, width = lane_width)
     lane8 = Lane(coordinates=[x_cross-lane_width/2, y_cross-lane_width, x_cross-lane_width/2, 0], speedLimit=120, curveType="line", width = lane_width)
-    mergeLane4 = Lane(coordinates=[x_cross+lane_width/2, y_cross-lane_width/2, x_cross+lane_width/2, y_cross+lane_width], speedLimit=120, curveType="merge", nextLanes=[(lane4, 1)], width = lane_width, crosswalk_width= 0)
+    mergeLane4 = Lane(coordinates=[x_cross+lane_width/2, y_cross-lane_width, x_cross+lane_width/2, y_cross+lane_width], speedLimit=120, curveType="merge", nextLanes=[(lane4, 1)], width = lane_width, crosswalk_width= 0)
     lane14 = Lane(coordinates=[x_cross-lane_width, y_cross-lane_width/2, x_cross+lane_width/2, y_cross+lane_width], speedLimit=120, curveType="ellipsis", isClockWise=0, nextLanes=[(lane4, 1)], parentLane=mergeLane4, width = lane_width, crosswalk_width= 0)
     lane16 = Lane(coordinates=[x_cross-lane_width, y_cross-lane_width/2, x_cross+lane_width, y_cross-lane_width/2], speedLimit=120, curveType="line", nextLanes=[(lane6, 1)], width = lane_width, crosswalk_width= 0)
     lane18 = Lane(coordinates=[x_cross-lane_width, y_cross-lane_width/2, x_cross-lane_width/2, y_cross-lane_width], speedLimit=120, curveType="ellipsis", isClockWise=1, nextLanes=[(lane8, 1)], width = lane_width, crosswalk_width= 0)

@@ -44,16 +44,37 @@ class TrafficMaster:
         self.draw()
 
     def setLaneSprites(self):
-
-        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/pokemon_center.png"), 370,500, batch=global_lane_batch)
+        # pokemon decoration
+        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/pokemon_center.png"), 720, 500,
+                                      batch=global_lane_batch)
         self.lane_sprites.append(sprite)
-        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/snorlax.png"), 320, 500,
+        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/snorlax.png"), 850, 100,
                                       batch=global_lane_batch)
         sprite.update(scale=0.05)
         self.lane_sprites.append(sprite)
-        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/kremlin.png"), 800, 50,
+        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/snorlax.png"), 800, 150,
                                       batch=global_lane_batch)
-        sprite.update(scale=2)
+        sprite.update(scale=0.05)
+        self.lane_sprites.append(sprite)
+        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/snorlax.png"), 920, 200,
+                                      batch=global_lane_batch)
+        sprite.update(scale=0.05)
+        self.lane_sprites.append(sprite)
+        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/snorlax.png"), 850, 500,
+                                      batch=global_lane_batch)
+        sprite.update(scale=0.05)
+        self.lane_sprites.append(sprite)
+        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/snorlax.png"), 75, 100,
+                                      batch=global_lane_batch)
+        sprite.update(scale=0.05)
+        self.lane_sprites.append(sprite)
+        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/snorlax.png"), 150, 200,
+                                      batch=global_lane_batch)
+        sprite.update(scale=0.05)
+        self.lane_sprites.append(sprite)
+        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/snorlax.png"), 250, 150,
+                                      batch=global_lane_batch)
+        sprite.update(scale=0.05)
         self.lane_sprites.append(sprite)
 
         laneImageWidth = pyglet.resource.image("images/road.png").width
