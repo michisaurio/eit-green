@@ -60,16 +60,7 @@ def main():
     config = Configuration(initList=[[0, 1, 2], [4, 5, 6], [8, 9, 10], [12, 13, 14]], lights=[light1, light1, light1, light_pedestrian1, light3, light3, light3, light_pedestrian2, light5, light5, light5, light_pedestrian3, light7, light7, light7, light_pedestrian4])
     tm = TrafficMaster([config])
     tm.lanes = [lane1,lane2, lane3, lane4, lane5, lane6, lane7, lane8, mergeLane4, lane14, lane16, lane18, lane36, lane38, lane31, lane58, lane52, lane54, lane72, lane74, lane76]
-    """
-    print(car1.speed)
-    tm.update(0.01)
-    print(car1.speed)
-    tm.update(0.01)
-    print(car1.speed)
-    tm.update(0.01)
-    print(car1.speed)
-    tm.update(0.01)
-    """
+
     tm.startSimulation(0.01)
 
 
