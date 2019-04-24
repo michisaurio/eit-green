@@ -76,19 +76,19 @@ class TrafficMaster:
                 while y01 + laneNoLineImageWidth < y1:
                     x01 = x0
                     while x01 + laneNoLineImageWidth < x1:
-                        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/road.png"), x01, y01, batch=global_lane_batch)
+                        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/road_no_line.png"), x01, y01, batch=global_lane_batch)
                         self.lane_sprites.append(sprite)
                         x01 += laneNoLineImageWidth
-                    sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/road.png"), x1-laneNoLineImageWidth, y01, batch=global_lane_batch)
+                    sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/road_no_line.png"), x1-laneNoLineImageWidth, y01, batch=global_lane_batch)
                     self.lane_sprites.append(sprite)
                     y01 += laneNoLineImageWidth
                 x01 = x0
                 while x01 + laneNoLineImageWidth < x1:
-                    sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/road.png"), x01, y1- laneNoLineImageWidth,
+                    sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/road_no_line.png"), x01, y1- laneNoLineImageWidth,
                                                   batch=global_lane_batch)
                     self.lane_sprites.append(sprite)
                     x01 += laneNoLineImageWidth
-                sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/road.png"), x1 - laneNoLineImageWidth, y1- laneNoLineImageWidth,
+                sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/road_no_line.png"), x1 - laneNoLineImageWidth, y1- laneNoLineImageWidth,
                                               batch=global_lane_batch)
                 self.lane_sprites.append(sprite)
 
