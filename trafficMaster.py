@@ -37,26 +37,15 @@ class TrafficMaster:
         self.draw()
 
     def setLaneSprites(self):
-        xlength  =  pyglet.resource.image("images/car_red.png").width
-        ylength =  pyglet.resource.image("images/car_red.png").height
-        (dx,dy)=positionCorrectionForPloting(0, 2*xlength, 2*ylength)
-        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/car_red.png"), 100+dx,100+dy, batch=global_lane_batch)
-        sprite.update(rotation=0)
-        sprite.update(scale=2)
+
+        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/pokemon_center.png"), 370,500, batch=global_lane_batch)
         self.lane_sprites.append(sprite)
-        (dx,dy)=positionCorrectionForPloting(-45, 2*xlength, 2*ylength)
-        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/car_blue.png"), 100+dx,100+dy, batch=global_lane_batch)
-        sprite.update(rotation=-45)
-        sprite.update(scale=2)
+        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/snorlax.png"), 320, 500,
+                                      batch=global_lane_batch)
+        sprite.update(scale=0.05)
         self.lane_sprites.append(sprite)
-        (dx,dy)=positionCorrectionForPloting(-90, 2*xlength, 2*ylength)
-        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/car_green.png"), 100+dx,100+dy, batch=global_lane_batch)
-        sprite.update(rotation=-90)
-        sprite.update(scale=2)
-        self.lane_sprites.append(sprite)
-        (dx,dy)=positionCorrectionForPloting(-135, 2*xlength, 2*ylength)
-        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/car_violet.png"), 100+dx,100+dy, batch=global_lane_batch)
-        sprite.update(rotation=-135)
+        sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/kremlin.png"), 800, 50,
+                                      batch=global_lane_batch)
         sprite.update(scale=2)
         self.lane_sprites.append(sprite)
 
