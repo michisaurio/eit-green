@@ -39,7 +39,7 @@ class TrafficMaster:
         self.draw()
 
     def setLaneSprites(self):
-
+        # pokemon decoration
         sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/pokemon_center.png"), 720, 500,
                                       batch=global_lane_batch)
         self.lane_sprites.append(sprite)
@@ -71,7 +71,6 @@ class TrafficMaster:
                                       batch=global_lane_batch)
         sprite.update(scale=0.05)
         self.lane_sprites.append(sprite)
-
 
         laneImageWidth = pyglet.resource.image("images/road.png").width
         laneNoLineImageWidth = pyglet.resource.image("images/road_no_line.png").width
