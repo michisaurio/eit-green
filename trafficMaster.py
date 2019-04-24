@@ -63,7 +63,7 @@ class TrafficMaster:
         laneImageWidth = pyglet.resource.image("images/road.png").width
         laneNoLineImageWidth = pyglet.resource.image("images/road_no_line.png").width
         crossWalkImageWith = pyglet.resource.image("images/road_crosswalk.png").width
-        
+
         for lane in self.lanes:
             coordinates = lane.coordinates
             global global_lane_batch
@@ -107,10 +107,10 @@ class TrafficMaster:
                                 y01 = y1 - crossWalkImageWith
                             if x01-x0 < crossWalkImageWith or x1-x01 <= crossWalkImageWith:
                                 sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/road_crosswalk.png"), x01+crossWalkImageWith,
-                                                              y01, batch=global_lane_batch)
+                                                              y01 - 1*lane.width/2 + 2*crossWalkImageWith, batch=global_lane_batch)
                             else:
                                 sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/road.png"), x01+laneImageWidth,
-                                                              y01, batch=global_lane_batch)
+                                                              y01 - 1*lane.width/2 + 2*laneImageWidth, batch=global_lane_batch)
                             sprite.update(rotation=180)
                             self.lane_sprites.append(sprite)
                             y01 += sprite.width
@@ -121,10 +121,10 @@ class TrafficMaster:
                                 y01 = y1 + crossWalkImageWith
                             if x01 - x0 < crossWalkImageWith or x1 - x01 <= crossWalkImageWith:
                                 sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/road_crosswalk.png"), x01,
-                                                              y01, batch=global_lane_batch)
+                                                              y01 - crossWalkImageWith, batch=global_lane_batch)
                             else:
                                 sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/road.png"), x01,
-                                                              y01, batch=global_lane_batch)
+                                                              y01 - laneImageWidth, batch=global_lane_batch)
                             self.lane_sprites.append(sprite)
                             y01 -= sprite.width
                         x01 += sprite.width
@@ -144,25 +144,25 @@ class TrafficMaster:
                             if x01 - x0 < crossWalkImageWith or x1 - x01 <= crossWalkImageWith:
                                 sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/road_crosswalk.png"),
                                                               x01 + crossWalkImageWith,
-                                                              y01, batch=global_lane_batch)
+                                                              y01 + 0*lane.width/2 + 1*laneImageWidth, batch=global_lane_batch)
                             else:
                                 sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/road.png"),
                                                               x01 + laneImageWidth,
-                                                              y01, batch=global_lane_batch)
+                                                              y01 + 0*lane.width/2 + 1*laneImageWidth, batch=global_lane_batch)
                             sprite.update(rotation=180)
                             self.lane_sprites.append(sprite)
                             y01 += sprite.width
-                        y01 = y0 - laneImageWidth
+                        y01 = y0
                         y1 = coordinates[1] - lane.width / 2
                         while y01 > y1:
                             if y01 - crossWalkImageWith < y1:
                                 y01 = y1 + crossWalkImageWith
                             if x01 - x0 < crossWalkImageWith or x1 - x01 <= crossWalkImageWith:
                                 sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/road_crosswalk.png"), x01,
-                                                              y01, batch=global_lane_batch)
+                                                              y01 - 0*lane.width/2 - 1*laneImageWidth, batch=global_lane_batch)
                             else:
                                 sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/road.png"), x01,
-                                                              y01, batch=global_lane_batch)
+                                                              y01 - 0*lane.width/2 - 1*laneImageWidth, batch=global_lane_batch)
                             self.lane_sprites.append(sprite)
                             y01 -= sprite.width
                         x01 += sprite.width
@@ -217,39 +217,38 @@ class TrafficMaster:
                         if y01 + crossWalkImageWith > y1:
                             y01 = y1 - crossWalkImageWith
                         x0 = coordinates[0]
-                        x01 = x0
                         x1 = coordinates[0] + lane.width / 2
-                        while x01 < x1:
-                            if x01 + crossWalkImageWith > x1:
-                                x01 = x1 - crossWalkImageWith
+                        x01 = x1
+                        while x01 > x0:
+                            if x01 - crossWalkImageWith < x0:
+                                x01 = x0 + crossWalkImageWith
                             if y01 - y0 < crossWalkImageWith or y1 - y01 <= crossWalkImageWith:
                                 sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/road_crosswalk.png"),
-                                                              x01 - crossWalkImageWith,
+                                                              x01 - crossWalkImageWith - lane.width/2,
                                                               y01 + crossWalkImageWith, batch=global_lane_batch)
                             else:
                                 sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/road.png"),
-                                                              x01 - laneImageWidth,
+                                                              x01 - laneImageWidth - lane.width/2,
                                                               y01 + laneImageWidth, batch=global_lane_batch)
                             sprite.update(rotation=90)
                             self.lane_sprites.append(sprite)
-                            x01 += sprite.width
-                        x01 = x0
-                        x1 = coordinates[0] - lane.width / 2
-                        x01 = x01
-                        while x01 > x1:
-                            if x01 - crossWalkImageWith < x1:
-                                x01 = x1 + crossWalkImageWith
+                            x01 -= sprite.width
+                        x1 = coordinates[0] - lane.width/2
+                        x01 = x1
+                        while x01 < x0:
+                            if x01 + crossWalkImageWith > x0:
+                                x01 = x0 - crossWalkImageWith
                             if y01 - y0 < crossWalkImageWith or y1 - y01 <= crossWalkImageWith:
                                 sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/road_crosswalk.png"),
-                                                              x01 + crossWalkImageWith,
+                                                              x01 + crossWalkImageWith + lane.width/2,
                                                               y01, batch=global_lane_batch)
                             else:
                                 sprite = pyglet.sprite.Sprite(pyglet.resource.image("images/road.png"),
-                                                              x01 + laneImageWidth,
+                                                              x01 + laneImageWidth + lane.width/2,
                                                               y01, batch=global_lane_batch)
                             sprite.update(rotation=-90)
                             self.lane_sprites.append(sprite)
-                            x01 -= sprite.width
+                            x01 += sprite.width
                         y01 += sprite.width
 
 
