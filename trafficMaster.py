@@ -61,9 +61,9 @@ class TrafficMaster:
         self.lane_sprites.append(sprite)
 
         laneImageWidth = pyglet.resource.image("images/road.png").width
-<<<<<<< HEAD
         laneNoLineImageWidth = pyglet.resource.image("images/road_no_line.png").width
         crossWalkImageWith = pyglet.resource.image("images/road_crosswalk.png").width
+        
         for lane in self.lanes:
             coordinates = lane.coordinates
             global global_lane_batch
