@@ -13,6 +13,8 @@ class Lane:
         self.curveType = curveType #String specifying if the curve is an ellipsis, line, laneswitch or merge
         self.length = 0
         self.spawnRate = spawnRate
+        if spawnRate > 0:
+            self.spawnTime = np.random.poisson(1/spawnRate)
         self.__queue = queue #Let the constructor overload the setter method to make sure that the queue exists
         self.isMerge = isMerge
         self.width = width
@@ -36,8 +38,14 @@ class Lane:
     def updatePositions(self, timeStep) -> None: #TODO: take mergelane updating of position into consideration
 
         # Car objects spawned according to a Poisson process (with predetermined mean val?)
-        if (self.spawnRate * timeStep > np.random.uniform(0, 1)):
-            self.queue += 1
+        #if (self.spawnRate * timeStep > np.random.uniform(0, 1)):
+
+        if self.spawnRate > 0:
+            if self.spawnTime < 0:
+                self.spawnTime = np.random.poisson(1/self.spawnRate)
+                self.queue += 1
+            else:
+                self.spawnTime -= timeStep
         if self.queue > 0 and (len(self.cars)== 0 or self.cars[-1][0].parameter > 57):  # TODO : The parameter here defines how far the first car has come
             self.spawn()
 
@@ -147,6 +155,8 @@ class Lane:
             currentParameter = currentCar.parameter
             if currentCar.lane.curveType == "ellipsis":
                 currentParameter = currentCar.lane.length * currentCar.parameter * 2 / (np.pi)
+                if currentCar.lane.parentLane != None:
+                    currentParameter = currentCar.lane.parentLane.length - project(self, currentCar)
             self.cars[i][1] = nextParameter - currentParameter - currentCar.comfortabilityConstant*(self.cars[i-1][0].length+currentCar.length)/2 - currentCar.comfortabilityConstant * currentCar.speed
             nextParameter = currentParameter
 

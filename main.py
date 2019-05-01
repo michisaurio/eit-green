@@ -12,13 +12,13 @@ def main():
     x_cross = screen_width/2;
     y_cross = screen_height/2;
 
-    lane1 = Lane(coordinates=[0,y_cross-lane_width/2,x_cross-lane_width,y_cross-lane_width/2], speedLimit=120, curveType="line", spawnRate=0.4, width = lane_width)
+    lane1 = Lane(coordinates=[0,y_cross-lane_width/2,x_cross-lane_width,y_cross-lane_width/2], speedLimit=120, curveType="line", spawnRate=0.2, width = lane_width)
     lane2 = Lane(coordinates=[x_cross-lane_width,y_cross+lane_width/2,0,y_cross+lane_width/2], speedLimit = 120, curveType="line", width = lane_width)
-    lane3 = Lane(coordinates=[x_cross-lane_width/2, screen_height, x_cross-lane_width/2, y_cross+lane_width], speedLimit=120, curveType="line", spawnRate=0.4, width = lane_width)
+    lane3 = Lane(coordinates=[x_cross-lane_width/2, screen_height, x_cross-lane_width/2, y_cross+lane_width], speedLimit=120, curveType="line", spawnRate=0.2, width = lane_width)
     lane4 = Lane(coordinates=[x_cross+lane_width/2, y_cross+lane_width, x_cross+lane_width/2, screen_height], speedLimit=120, curveType="line", width = lane_width)
-    lane5 = Lane(coordinates=[screen_width,y_cross+lane_width/2,x_cross+lane_width,y_cross+lane_width/2], speedLimit=120, curveType="line", spawnRate=0.4, width = lane_width)
+    lane5 = Lane(coordinates=[screen_width,y_cross+lane_width/2,x_cross+lane_width,y_cross+lane_width/2], speedLimit=120, curveType="line", spawnRate=0.2, width = lane_width)
     lane6 = Lane(coordinates=[x_cross+lane_width,y_cross-lane_width/2,screen_width,y_cross-lane_width/2], speedLimit=120, curveType="line", width = lane_width)
-    lane7 = Lane(coordinates=[x_cross+lane_width/2, 0, x_cross+lane_width/2, y_cross-lane_width], speedLimit=120, curveType="line", spawnRate=0.4, width = lane_width)
+    lane7 = Lane(coordinates=[x_cross+lane_width/2, 0, x_cross+lane_width/2, y_cross-lane_width], speedLimit=120, curveType="line", spawnRate=0.2, width = lane_width)
     lane8 = Lane(coordinates=[x_cross-lane_width/2, y_cross-lane_width, x_cross-lane_width/2, 0], speedLimit=120, curveType="line", width = lane_width)
     mergeLane4 = Lane(coordinates=[x_cross+lane_width/2, y_cross-lane_width, x_cross+lane_width/2, y_cross+lane_width], speedLimit=120, curveType="merge", nextLanes=[(lane4, 1)], width = lane_width, crosswalk_width= 0)
     lane14 = Lane(coordinates=[x_cross-lane_width, y_cross-lane_width/2, x_cross+lane_width/2, y_cross+lane_width], speedLimit=120, curveType="ellipsis", isClockWise=0, nextLanes=[(lane4, 1)], parentLane=mergeLane4, width = lane_width, crosswalk_width= 0)
@@ -72,17 +72,17 @@ def main2():
     cross_size = 100
 
     laneS1 = Lane(coordinates=[x_cross-lane_width, y_cross-cross_size, x_cross-lane_width, 0], speedLimit=120, curveType="line", width = lane_width)
-    laneS2 = Lane(coordinates=[x_cross, 0, x_cross, y_cross-cross_size], speedLimit=120, curveType="line", spawnRate=0.4, width = lane_width)
-    laneS3 = Lane(coordinates=[x_cross+lane_width, 0, x_cross+lane_width, y_cross-cross_size], speedLimit=120, curveType="line", spawnRate=0.4, width = lane_width)
-    laneN3 = Lane(coordinates=[x_cross-lane_width, screen_height, x_cross-lane_width, y_cross+cross_size], speedLimit=120, curveType="line", spawnRate=0.4, width=lane_width)
-    laneN2 = Lane(coordinates=[x_cross, screen_height, x_cross, y_cross+cross_size], speedLimit=120, curveType="line", spawnRate=0.4, width=lane_width)
+    laneS2 = Lane(coordinates=[x_cross, 0, x_cross, y_cross-cross_size], speedLimit=120, curveType="line", spawnRate=0, width = lane_width)
+    laneS3 = Lane(coordinates=[x_cross+lane_width, 0, x_cross+lane_width, y_cross-cross_size], speedLimit=120, curveType="line", spawnRate=0.2, width = lane_width)
+    laneN3 = Lane(coordinates=[x_cross-lane_width, screen_height, x_cross-lane_width, y_cross+cross_size], speedLimit=120, curveType="line", spawnRate=0, width=lane_width)
+    laneN2 = Lane(coordinates=[x_cross, screen_height, x_cross, y_cross+cross_size], speedLimit=120, curveType="line", spawnRate=0, width=lane_width)
     laneN1 = Lane(coordinates=[x_cross+lane_width, y_cross+cross_size, x_cross+lane_width, screen_height], speedLimit=120, curveType="line", width=lane_width)
-    laneV3 = Lane(coordinates=[0, y_cross-lane_width, x_cross-cross_size, y_cross-lane_width], speedLimit=120, curveType="line", spawnRate=0.4, width = lane_width)
-    laneV2 = Lane(coordinates=[0, y_cross, x_cross-cross_size, y_cross], speedLimit=120, curveType="line", spawnRate=0.4, width = lane_width)
+    laneV3 = Lane(coordinates=[0, y_cross-lane_width, x_cross-cross_size, y_cross-lane_width], speedLimit=120, curveType="line", spawnRate=0, width = lane_width)
+    laneV2 = Lane(coordinates=[0, y_cross, x_cross-cross_size, y_cross], speedLimit=120, curveType="line", spawnRate=0.2, width = lane_width)
     laneV1 = Lane(coordinates=[x_cross-cross_size, y_cross+lane_width, 0, y_cross+lane_width], speedLimit=120, curveType="line", width = lane_width)
     laneO1 = Lane(coordinates=[x_cross+cross_size, y_cross-lane_width, screen_width, y_cross-lane_width], speedLimit=120, curveType="line", width = lane_width)
-    laneO2 = Lane(coordinates=[screen_width, y_cross, x_cross+cross_size, y_cross], speedLimit=120, curveType="line", spawnRate=0.4, width = lane_width)
-    laneO3 = Lane(coordinates=[screen_width, y_cross+lane_width, x_cross+cross_size, y_cross+lane_width], speedLimit=120, curveType="line", spawnRate=0.4, width = lane_width)
+    laneO2 = Lane(coordinates=[screen_width, y_cross, x_cross+cross_size, y_cross], speedLimit=120, curveType="line", spawnRate=0, width = lane_width)
+    laneO3 = Lane(coordinates=[screen_width, y_cross+lane_width, x_cross+cross_size, y_cross+lane_width], speedLimit=120, curveType="line", spawnRate=0, width = lane_width)
 
     laneSVN = Lane(coordinates=[x_cross+lane_width, y_cross-cross_size, x_cross+lane_width, y_cross+cross_size],
                     speedLimit=120, curveType="merge", width=lane_width, nextLanes=[(laneN1, 1)])
@@ -125,7 +125,7 @@ def main2():
                 speedLimit=120, curveType="ellipsis", width=lane_width, isClockWise=1, nextLanes=[(laneN1, 1)])
 
     laneS2.nextLanes = [(laneS2V1, 1)]
-    laneS3.nextLanes = [(laneS3N1, 0.5), (laneS3O1, 1)]
+    laneS3.nextLanes = [(laneS3N1, 1), (laneS3O1, 1)]
     laneV2.nextLanes = [(laneV2N1, 1)]
     laneV3.nextLanes = [(laneV3O1, 0.5), (laneV3S1, 1)]
     laneN2.nextLanes = [(laneN2O1, 1)]
@@ -173,4 +173,4 @@ def main2():
                 laneS3O1, laneV3S1, laneN3V1, laneO3N1]
     tm.startSimulation(0.01)
 if __name__ == "__main__":
-    main()
+    main2()

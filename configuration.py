@@ -6,6 +6,7 @@ class Configuration:
     def __init__(self, initList, lights: [Light] = None) -> None:
         self.lights = lights
         self.stateList = inCon.main(mergeList=initList)
+        #self.stateList = [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]]
         self.curUpdatingYellowToRed = False
         self.curUpdatingRedToGreen = False
         self.curConfig = 0
@@ -20,7 +21,6 @@ class Configuration:
     # has passed the lights change colour.
     def update(self, newConfig) -> None:  # TODO: Check if function calls are correct
         for i in self.stateList[newConfig]:
-            print("hey")
             self.lights[i].color = Color.GREEN
 
     def prepare(self):

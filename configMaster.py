@@ -9,8 +9,6 @@ class ConfigMaster:
 
     def update(self, timeStep: float) -> None:
         for configuration in self.configurations:
-            print("hey")
-            #if np.random.uniform(0, 1) < 0.01:
             if self.countDown < 0:
                 self.nextLight = (self.nextLight+1)%len(configuration.stateList)
                 configuration.update(newConfig=self.nextLight)

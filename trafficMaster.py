@@ -183,7 +183,6 @@ class TrafficMaster:
                             y01 -= sprite.width
                         x01 += sprite.width
 
-
             elif coordinates[0] == coordinates[2] and lane.curveType == "line" and (lane.nextLanes == None or len(lane.nextLanes)>1):
                 if coordinates[1] < coordinates [3]:
                     y0, y1 = coordinates[1], coordinates[3]
